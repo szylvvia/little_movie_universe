@@ -123,6 +123,16 @@ class MovieController extends Controller
         return $imageData;
     }
 
+    public function isDuplicateForAdd($movie)
+    {
+        $duplicate = Movie::where(['title'=> $movie->title])->where(['release_date' => $movie->releaseDate])->get();
+        if(sizeof($duplicate)>0)
+        {
+            return true;
+        }
+        return false;
+    }
+
     public function addMovie(Request $request)
     {
         $validator = $this->validator($request->all());
@@ -137,28 +147,36 @@ class MovieController extends Controller
         $p = $this->resizeImage($request->poster,300);
         $t = $this->changeTrailerLink($request->trailerLink);
         $s = $this->changeSoundtrackLink($request->soundtrackLink);
-        $movie = Movie::create([
-            'title' => $request->title,
-            'release_date' => $request->releaseDate,
-            'description' => $request->description,
-            'trailer_link' => $t,
-            'soundtrack_link' => $s,
-            'poster' => $p,
-            'user_id' => $userId,
-            'status' => 'pending',
-        ]);
+        $isDuplicate = $this->isDuplicateForAdd($request);
+        if(!$isDuplicate) {
+            $movie = Movie::create([
+                'title' => $request->title,
+                'release_date' => $request->releaseDate,
+                'description' => $request->description,
+                'trailer_link' => $t,
+                'soundtrack_link' => $s,
+                'poster' => $p,
+                'user_id' => $userId,
+                'status' => 'pending',
+            ]);
 
-        if (!empty($request->images)) {
-            foreach ($request->images as $image) {
-                $i = $this->resizeImage($image,600);
-                $movie->image()->create([
-                    'image' => $i,
-                ]);
+            if (!empty($request->images)) {
+                foreach ($request->images as $image) {
+                    $i = $this->resizeImage($image, 600);
+                    $movie->image()->create([
+                        'image' => $i,
+                    ]);
+                }
             }
+
+            $movie->artist()->sync($request->artists);
+            return redirect('/movies')->with('success', 'Film was added successfully');
+        }
+        else
+        {
+            return redirect('/movies')->with('error', 'Film already exist in database');
         }
 
-        $movie->artist()->sync($request->artists);
-        return redirect('/movies')->with('success', 'Film was added successfully');
     }
     public function showMovie($id)
     {
