@@ -135,6 +135,21 @@ class MovieTest extends TestCase
         $response->assertStatus(302);
         $response->assertRedirect('/movies');
         $response->assertSessionHas('success', 'Your movie was delete');
+    }
+
+    public function testDeleteMovieWhileMovieIsNotExist(): void
+    {
+        $user = User::factory()->create();
+        $movie = Movie::factory()->create();
+        $this->actingAs($user);
+        $response = $this->delete("movies/$movie->id");
+        $response->assertStatus(302);
+        $response->assertRedirect('/movies');
+        $response->assertSessionHas('success', 'Your movie was delete');
+        $response = $this->delete("movies/$movie->id");
+        $response->assertStatus(302);
+        $response->assertRedirect('/movies');
+        $response->assertSessionHas('error', "Movie with this ID doesn't exist!");
 
 
     }

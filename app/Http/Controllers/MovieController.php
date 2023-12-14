@@ -135,6 +135,7 @@ class MovieController extends Controller
 
     public function addMovie(Request $request)
     {
+        $this->middleware('auth');
         $validator = $this->validator($request->all());
 
         if ($validator->fails()) {
@@ -143,12 +144,13 @@ class MovieController extends Controller
                 ->withInput();
         }
 
-        $userId = auth()->user()->id;
-        $p = $this->resizeImage($request->poster,300);
-        $t = $this->changeTrailerLink($request->trailerLink);
-        $s = $this->changeSoundtrackLink($request->soundtrackLink);
         $isDuplicate = $this->isDuplicateForAdd($request);
         if(!$isDuplicate) {
+            $userId = auth()->user()->id;
+            $p = $this->resizeImage($request->poster,300);
+            $t = $this->changeTrailerLink($request->trailerLink);
+            $s = $this->changeSoundtrackLink($request->soundtrackLink);
+
             $movie = Movie::create([
                 'title' => $request->title,
                 'release_date' => $request->releaseDate,
