@@ -35,7 +35,7 @@ class HomeController extends Controller
         {
             if(auth()->user()->id)
             {
-                $isUserVoted = Answer::where(['user_id'=>auth()->user()->id])->first();
+                $isUserVoted = Answer::where(['user_id'=>auth()->user()->id, 'quiz_id'=>$quiz->id])->first();
             }
         }
         return view('home',compact('quiz', 'isUserVoted','statMap'));

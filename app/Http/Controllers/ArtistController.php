@@ -18,6 +18,10 @@ class ArtistController extends Controller
         return view('artists', compact('artist'));
     }
 
+    public function addArtistForm()
+    {
+        return view("addArtist");
+    }
     protected function validator(array $data)
     {
         return Validator::make($data, [
@@ -97,64 +101,85 @@ class ArtistController extends Controller
         $this->middleware('auth');
 
         $toDelete = Artist::find($id);
-        if($toDelete)
+        if($toDelete->user_id==auth()->user()->id)
         {
-            $toDelete->delete();
-            return redirect()->route('showArtists')->with('success', 'Your artist was delete');
+            if($toDelete)
+            {
+                $toDelete->delete();
+                return redirect()->route('showArtists')->with('success', 'Your artist was delete');
+            }
+            else
+            {
+                return redirect()->route('showArtist')->with('error', "Artist with this ID doesn't exist!");
+
+            }
         }
         else
         {
-            return redirect()->route('showArtist')->with('error', "Artist with this ID doesn't exist!");
-
+            return redirect()->route('showArtist')->with('error', "This artist do not belong to you!");
         }
+
     }
     public function editArtistForm($id)
     {
         $this->middleware('auth');
         $artist = Artist::find($id);
-        return view('editArtistForm', compact('artist'));
+        if($artist->user_id==auth()->user()->id)
+        {
+            return view('editArtistForm', compact('artist'));
+        }
+        else
+        {
+            return redirect()->route('showArtist')->with('error', "This artist do not belong to you!");
+        }
+
     }
 
     public function editArtist(Request $request, $id)
     {
         $this->middleware('auth');
         $edit = Artist::find($id);
-
-        if($request->image==null)
+        if($edit->user_id==auth()->user()->id or auth()->user()->role=='admin')
         {
-            $request->image = $edit->image;
+            if($request->image==null)
+            {
+                $request->image = $edit->image;
+            }
+            else
+            {
+                $request->image = $this->resizeImage($request->image);
+            }
+
+            $validator = $this->validator($request->all());
+
+            if ($validator->fails()) {
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+
+            $edit->update([
+                'name' => $request->name,
+                'surname' => $request->surname,
+                'birth_date' => $request->birth_date,
+                'death_date' => $request->death_date,
+                'description' => $request->description,
+                'status' => 'pending',
+                'gender' => $request->gender,
+                'profession' => $request->profession,
+                'image' => $request->image
+            ]);
+
+            if(auth()->user()->role=='admin')
+            {
+                return redirect()->route('showAdminPanel')->with('success', 'Artist was successfully updated');
+            }
+            return redirect()->route('showArtist',['id'=>$id])->with('success', 'Your artist was successfully updated');
         }
         else
         {
-            $request->image = $this->resizeImage($request->image);
+            return redirect()->route('showArtist')->with('error', 'Artist do not belong to you');
         }
-
-        $validator = $this->validator($request->all());
-
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        $edit->update([
-            'name' => $request->name,
-            'surname' => $request->surname,
-            'birth_date' => $request->birth_date,
-            'death_date' => $request->death_date,
-            'description' => $request->description,
-            'status' => 'pending',
-            'gender' => $request->gender,
-            'profession' => $request->profession,
-            'image' => $request->image
-        ]);
-
-        if(auth()->user()->role=='admin')
-        {
-            return redirect()->route('showAdminPanel')->with('success', 'Artist was successfully updated');
-        }
-        return redirect()->route('showArtist',['id'=>$id])->with('success', 'Your artist was successfully updated');
-
     }
 
     public function showArtist($id)

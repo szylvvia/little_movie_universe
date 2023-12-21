@@ -26,6 +26,8 @@ Route::get('/movies/{id}', [App\Http\Controllers\MovieController::class, 'showMo
 Route::get('/artists/{id}', [App\Http\Controllers\ArtistController::class, 'showArtist'])->name('showArtist');
 
 Route::get('/search/{string}', [App\Http\Controllers\SearchController::class, 'search'])->name('search');
+Route::get('/searchReturnJson/{string}', [App\Http\Controllers\SearchController::class, 'searchReturnJson'])->name('searchReturnJson');
+
 
 Auth::routes();
 Route::get('/addArtist', [App\Http\Controllers\ArtistController::class, 'addArtistForm'])->name('addArtistForm');

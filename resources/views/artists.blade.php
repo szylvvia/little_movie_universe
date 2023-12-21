@@ -9,7 +9,9 @@
                 </div>
             @endif
             <h1>All Artists</h1>
-           @auth<a href="{{ route('addArtist') }}">Add artist</a>@endauth
+           @auth
+               <a href="{{ route('addArtistForm') }}">Add artist</a>
+           @endauth
             <hr>
             <div class="row">
                 @foreach($artist as $a)

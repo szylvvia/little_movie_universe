@@ -10,6 +10,7 @@ use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
+use function PHPUnit\Framework\isNull;
 
 class QuizController extends Controller
 {
@@ -134,23 +135,27 @@ class QuizController extends Controller
             ->whereDate('end_date', '>=', $currentDate)
             ->first();
 
-        if($quiz->id==$request->quiz_id)
-        {
-            $question = Question::where(['id' => $request->question_id])->first();
-            if($question!=null)
-            {
-                $answer = Answer::create(
-                    [
-                        'user_id' => auth()->user()->id,
-                        'question_id' => $request->question_id,
-                        'quiz_id' => $request->quiz_id,
-                    ]
-                );
-                if($answer)
-                {
-                    return redirect()->route("home")->with('success','Vote was successfully added');
+        $currentAnswer = Answer::where(['quiz_id'=>$quiz->id, 'user_id'=>auth()->user()->id,'question_id' => $request->question_id])->first();
+        if(isNull($currentAnswer)) {
+            if ($quiz->id == $request->quiz_id) {
+                $question = Question::where(['id' => $request->question_id])->first();
+                if ($question != null) {
+                    $answer = Answer::create(
+                        [
+                            'user_id' => auth()->user()->id,
+                            'question_id' => $request->question_id,
+                            'quiz_id' => $request->quiz_id,
+                        ]
+                    );
+                    if ($answer) {
+                        return redirect()->route("home")->with('success', 'Vote was successfully added');
+                    }
                 }
             }
+        }
+        else
+        {
+            return redirect()->route("home")->with('error', 'You already add vote to this quiz');
         }
         return redirect()->route("home")->with('error','Something gone wrong. Try again');
     }
@@ -165,11 +170,11 @@ class QuizController extends Controller
         if($toDelete)
         {
             $toDelete->delete();
-            return redirect()->route('showAdminPanel')->with('success', 'Your vote was delete');
+            return redirect()->route('home')->with('success', 'Your vote was delete');
         }
         else
         {
-            return redirect()->route('showAdminPanel')->with('error', "Vote doesn't exist!");
+            return redirect()->route('home')->with('error', "Vote doesn't exist!");
 
         }
 

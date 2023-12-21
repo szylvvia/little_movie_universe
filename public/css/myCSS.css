@@ -7,7 +7,6 @@
     font-weight: bold;
 }
 
-
 #error
 {
     background-color: red !important;
@@ -89,3 +88,27 @@ iframe
 {
     transform: scale(1.1);
 }
+#searchForm {
+    display: flex;
+    flex-direction: column;
+}
+
+#searchForm {
+    display: flex;
+    flex-direction: column;
+}
+
+#searchResultsList {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    z-index: 1;
+    top: 100%;
+}
+
+.d-flex {
+    display: flex;
+    align-items: center;
+}
+
+

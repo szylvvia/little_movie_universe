@@ -40,14 +40,14 @@
         @auth
             @if($isUserVoted)
                @foreach($quiz->question as $q)
-                   @if($q->id==$isUserVoted->question_id)
+                   @if($isUserVoted->question_id==$q->id)
                        <div class="col-md-3 mt-3 text-center">
-                           <img src="data:image/jpeg;base64,{{ base64_encode($q->image) }}" alt="Opis obrazu">
                            <form method="POST" action="{{ route('deleteAnswer', ['question_id'=>$q->id, 'quiz_id'=>$quiz->id]) }}">
                                @csrf
                                <button type="submit" class="btn">
+                                   <img src="data:image/jpeg;base64,{{ base64_encode($q->image) }}" alt="Opis obrazu">
                                    <h5 class="mt-2"><i class="bi bi-bookmark-star-fill"></i>{{$q->question}}</h5>
-                                    <p>{{ number_format($statMap[$q->id], 1, '.', '') ?? '0' }}%</p>
+                                   <p>{{ number_format($statMap[$q->id], 1, '.', '') ?? '0' }}%</p>
                                </button>
                            </form>
                        </div>
@@ -66,7 +66,8 @@
                             @csrf
                             <button type="submit" class="btn">
                                 <img src="data:image/jpeg;base64,{{ base64_encode($q->image) }}" alt="Opis obrazu">
-                                <h5>{{$q->question}}</h5>
+                                <h5 class="mt-2">{{$q->question}}</h5>
+                                <p>{{ number_format($statMap[$q->id], 1, '.', '') ?? '0' }}%</p>
                             </button>
                         </form>
                     </div>

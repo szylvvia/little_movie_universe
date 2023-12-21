@@ -56,18 +56,21 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
+                    <ul class="navbar-nav me-auto"></ul>
 
-                    </ul>
-                    <form class="d-flex w-75" id="searchForm" method="get" action="{{route('search',['string'=>"string"])}}">
+                    <form class="position-relative w-75" id="searchForm" method="get" action="{{ route('search',['string'=>"string"]) }}">
                         @csrf
-                        <input required class="form-control mx-2" type="search" placeholder="Search" aria-label="Search" id="searchInput" name="string">
-                        <button type="submit" class="btn text-info" id="searchButton"><i class="bi bi-search"></i></button>
+                        <div class="d-flex">
+                            <input required class="form-control mx-2 w-75" type="search" placeholder="Search" aria-label="Search" id="searchInput" name="string" autocomplete="off">
+                            <button type="submit" class="btn text-info" id="searchButton"><i class="bi bi-search"></i></button>
+                        </div>
+                        <ul id="searchResultsList" class="list-group mx-2 w-75">
+                        </ul>
                     </form>
 
+
+
                     <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
