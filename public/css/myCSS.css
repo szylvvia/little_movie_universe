@@ -137,3 +137,18 @@ iframe
     height: 200px;
     width: 100px;
 }
+
+.trailer
+{
+    width: 100%;
+}
+
+.soundtrack
+{
+    width: 100%;
+    border-radius: 0 !important;
+}
+.galleryBackground
+{
+    background-color: #1a202c;
+}

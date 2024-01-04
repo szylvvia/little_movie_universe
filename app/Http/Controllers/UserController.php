@@ -19,17 +19,17 @@ class UserController extends Controller
         return auth()->user()->id;
     }
 
-    public function showUser()
+    public function showUser($id)
     {
-        $id = $this->getUserId();
-        if($id==null)
+        $user = User::where(['id'=>$id])->get();
+        if($user->isNotEmpty())
         {
-            return redirect()->route('home')->with('error', 'You are not log in!');
+            $user = User::find($id);
+            $fav = Collection::where(['user_id'=>$id, 'name' => 'favorite'])->get();
+            $wat = Collection::where(['user_id'=>$id, 'name' => 'toWatch'])->get();
+            return view("showUser", compact("user","fav","wat"));
         }
-        $user = User::find($id);
-        $fav = Collection::where(['user_id'=>$id, 'name' => 'favorite'])->get();
-        $wat = Collection::where(['user_id'=>$id, 'name' => 'toWatch'])->get();
-        return view("showUser", compact("user","fav","wat"));
+        return redirect()->route('home')->with('error', 'User is not existing');
     }
 
     public function deleteUser()

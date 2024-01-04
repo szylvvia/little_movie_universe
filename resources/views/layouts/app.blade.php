@@ -68,8 +68,6 @@
                         </ul>
                     </form>
 
-
-
                     <ul class="navbar-nav ms-auto">
                         @guest
                             @if (Route::has('login'))
@@ -96,7 +94,7 @@
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('showUser') }}">
+                                    <a class="dropdown-item" href="{{ route('showUser',['id'=>auth()->user()->id]) }}">
                                         {{ __('Profile') }}
                                     </a>
                                     @if(auth()->user()->role=='admin')
@@ -115,10 +113,16 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="py-4 mb-5">
             @yield('content')
         </main>
     </div>
+
+    <footer class="bg-white text-dark text-center py-2 border-top shadow-sm fixed-bottom pt-3">
+        <div class="container">
+            <p>&copy; 2024 Little Movie Universe</p>
+        </div>
+    </footer>
 <script src="{{ asset('js/search.js') }}"></script>
 </body>
 </html>

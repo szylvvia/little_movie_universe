@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Movie;
 use Illuminate\Http\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Artist;
 use Illuminate\Support\Facades\Storage;
@@ -185,6 +186,8 @@ class ArtistController extends Controller
     public function showArtist($id)
     {
         $artist = Artist::find($id);
+        $artist->birth_date = Carbon::parse($artist->birth_date)->format('d.m.Y');
+        $artist->death_date = Carbon::parse($artist->death_date)->format('d.m.Y');
         return view("showArtist", compact("artist"));
     }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Artist;
 use App\Models\Movie;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class SearchController extends Controller
@@ -25,6 +26,9 @@ class SearchController extends Controller
             $artists = Artist::where('name', 'like', '%' . $string . '%')
                 ->orWhere('surname', 'like', '%' . $string . '%')
                 ->get();
+            $users = User::where('name', 'like', '%' . $string . '%')
+                ->orWhere('surname', 'like', '%' . $string . '%')
+                ->get();
 
             $movies->transform(function ($item) {
                 $item['poster'] = base64_encode($item['poster']);
@@ -34,8 +38,17 @@ class SearchController extends Controller
                 $item['image'] = base64_encode($item['image']);
                 return $item;
             });
+            $users->transform(function ($item) {
+                $item['image'] = base64_encode($item['image']);
+                return $item;
+            });
+            $users->transform(function ($item) {
+                $item['background'] = base64_encode($item['background']);
+                return $item;
+            });
 
-            $result = $movies->merge($artists);
+            $tmp = $movies->merge($artists);
+            $result = $tmp->merge($users);
 
             return response()->json($result);
         } catch (\Exception $e) {

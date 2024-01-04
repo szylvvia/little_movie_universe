@@ -2,7 +2,6 @@
 
 @section('content')
     <div class="container">
-        @auth
             @if (session('success'))
                 <div class="alert alert-success" role="alert">
                     {{ session('success') }}
@@ -39,45 +38,66 @@
                 </div>
                 <div class="d-flex flex-column align-items-center">
                     <div>
-                        <img src="{{ Auth::user()->image }}" alt="User image" class="rounded-circle user-image-medium">
+                        <img src="{{$user->image}}" alt="User image" class="rounded-circle user-image-medium">
                     </div>
-                    <div class="align-content-center text-center">
-                        <h3>{{Auth::user()->name}} {{Auth::user()->surname}}</h3>
-                    </div>
-                    @if(Auth::user()->desccription)
-                    <div class="align-content-center text-center">
-                        <p><i>{{Auth::user()->description}}</i></p>
-                    </div>
-                    @endif
-                    @if(Auth::user()->id)
-                    <div class="row mb-3">
-                        <div class="col-auto">
-                            <a href="{{ route('editUserForm')}}" class="btn btn-warning">Edit profile</a>
-                        </div>
-                        <div class="col-auto">
-                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">Delete profile</button>
+                    <div class="col-md-9">
+                        <div class="d-flex align-items-center justify-content-center flex-column">
+                            <h3>{{$user->name}} {{$user->surname}}</h3>
+                            @auth()
+                                @if($user->id==auth()->user()->id)
+                                    <div class="d-flex justify-content-center">
+                                        <a href="{{ route('editUserForm')}}" class="btn me-2" title="editProfile"><h5><i class="bi bi-gear"></i></h5></a>
+                                        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" title="Delete profile"><h5><i class="bi bi-x-circle"></i></h5></button>
+                                    </div>
+                                @endif
+                            @endauth
                         </div>
                     </div>
+                    @if($user->desccription)
+                    <div class="align-content-center text-center">
+                        <p><i>{{$user->description}}</i></p>
+                    </div>
                     @endif
+
                 </div>
             <hr>
             <div class="row mb-3"></div>
                 <div class="col-auto">
                     <div class="row mb-3">
                         <h4>Favorite</h4>
-                        @foreach($fav as $f)
-                            <p>{{$f->movie->title}}</p>
-                        @endforeach
+                        @if($fav->isNotEmpty())
+                            @foreach($fav as $f)
+                                <div class="col-md-1 text-center">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <a href="{{ route('showMovie', ['id' => $f->movie->id]) }}" class="text-decoration-none">
+                                            <img src="data:image/jpeg;base64,{{ base64_encode($f->movie->poster) }}" class="imageArtistMini" alt="Opis obrazu">
+                                            <p>{{$f->movie->title}}</p>
+                                        </a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <p><i>No favorite movies. Let's add something!</i></p>
+                        @endif
                     </div>
                     <div class="row mb-3">
                         <h4>To watch</h4>
-                        @foreach($wat as $w)
-                            <p>{{$w->movie->title}}</p>
-                        @endforeach
+                        @if($wat->isNotEmpty())
+                            @foreach($wat as $w)
+                                <div class="col-md-1 text-center">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <a href="{{ route('showMovie', ['id' => $w->movie->id]) }}" class="text-decoration-none">
+                                            <img src="data:image/jpeg;base64,{{ base64_encode($w->movie->poster) }}" class="imageArtistMini" alt="Opis obrazu">
+                                            <p>{{$w->movie->title}}</p>
+                                        </a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <p><i>No movies to watch. Let's add something!</i></p>
+                        @endif
                     </div>
                 </div>
-
-        @endauth
         @guest
         @endguest
     </div>

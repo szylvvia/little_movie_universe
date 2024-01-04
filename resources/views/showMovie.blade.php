@@ -59,7 +59,7 @@
                         @endauth
                         <p><i>{{$movie->description}}</i></p>
                         <p>Release date {{$movie->release_date}}</p>
-                        <div class="mb-2">
+                        <div class="mb-4">
                             <img src="{{asset('img/Gold_Star.png')}}" alt="star" class="little-star">
                             <span class="ml-2">{{number_format($avgRate,1)}}</span>
                         </div>
@@ -79,34 +79,20 @@
                 </div>
 
             <div class="row mb-3">
-                <h3>Trailer</h3>
-                <div class="col-md-6">
-                    <iframe width="600" height="352" src="{{$movie->trailer_link}}" title="{{$movie->title}}"
+                <div class="col-md-8">
+                    <iframe class="trailer" height="352" src="{{$movie->trailer_link}}" title="{{$movie->title}}"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                             allowfullscreen></iframe>
                 </div>
-            </div>
-            <div class="row mb-3">
-                <h3>Soundtrack</h3>
-                <div class="col-md-6">
-                    <iframe src="{{$movie->soundtrack_link}}" width="600" height="352" allowfullscreen=""
+                <div class="col-md-4">
+                    <iframe class="soundtrack" src="{{$movie->soundtrack_link}}" height="352" allowfullscreen=""
                             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                             loading="lazy"></iframe>
                 </div>
             </div>
-            <div class="row mb-3">
-                <h3>Artist</h3>
-                <ul>
-                    @foreach($movie->artist as $a)
-                        <li>{{$a->name}} {{$a->surname}} </li>
-                        <img src="data:image/jpeg;base64,{{ base64_encode($a->image) }}" alt="Opis obrazu">
-                    @endforeach
-                </ul>
-            </div>
-            <div class="row mb-3">
-                <h3>Gallery</h3>
-                <div class="col-md-6">
 
+            <div class="row mb-3 m-0 rounded-3 align-items-center justify-content-center galleryBackground">
+                <div class="col-md-8">
                     <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner">
                             @foreach($movie->image as $i)

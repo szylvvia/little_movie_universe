@@ -27,6 +27,7 @@ Route::get('/artists/{id}', [App\Http\Controllers\ArtistController::class, 'show
 
 Route::get('/search/{string}', [App\Http\Controllers\SearchController::class, 'search'])->name('search');
 Route::get('/searchReturnJson/{string}', [App\Http\Controllers\SearchController::class, 'searchReturnJson'])->name('searchReturnJson');
+Route::get('/showUser/{id}', [App\Http\Controllers\UserController::class, 'showUser'])->name('showUser');
 
 
 Auth::routes();
@@ -43,7 +44,6 @@ Route::get('/movies/edit/{id}', [App\Http\Controllers\MovieController::class, 'e
 Route::post('/movies/edit/{id}', [App\Http\Controllers\MovieController::class, 'editMovie'])->name('editMovie');
 Route::post("movies/{id}", [App\Http\Controllers\RateController::class, 'addOrEditRate'])->name('addOrEditRate');
 Route::delete("movies/rate/{id}", [App\Http\Controllers\RateController::class, 'deleteRate'])->name('deleteRate');
-Route::get('/profile', [App\Http\Controllers\UserController::class, 'showUser'])->name('showUser');
 Route::delete("/profile", [App\Http\Controllers\UserController::class, 'deleteUser'])->name('deleteUser');
 Route::get('/editProfile', [App\Http\Controllers\UserController::class, 'editUserForm'])->name('editUserForm');
 Route::post('/editProfile', [App\Http\Controllers\UserController::class, 'editUser'])->name('editUser');
