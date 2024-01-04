@@ -101,7 +101,7 @@ class ArtistController extends Controller
         $this->middleware('auth');
 
         $toDelete = Artist::find($id);
-        if($toDelete->user_id==auth()->user()->id)
+        if($toDelete->user_id==auth()->user()->id or auth()->user()->role=='admin')
         {
             if($toDelete)
             {
@@ -124,13 +124,13 @@ class ArtistController extends Controller
     {
         $this->middleware('auth');
         $artist = Artist::find($id);
-        if($artist->user_id==auth()->user()->id)
+        if($artist->user_id==auth()->user()->id or auth()->user()->role=='admin')
         {
             return view('editArtistForm', compact('artist'));
         }
         else
         {
-            return redirect()->route('showArtist')->with('error', "This artist do not belong to you!");
+            return redirect()->route('showArtist', ['id' => $artist->id])->with('error', "This artist does not belong to you!");
         }
 
     }

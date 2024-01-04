@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container" xmlns="http://www.w3.org/1999/html">
+    <div class="container">
         <div class="card-body">
             @if (session('success'))
                 <div class="alert alert-success" role="alert">
@@ -13,64 +13,77 @@
                     {{ session('error') }}
                 </div>
             @endif
-                @if($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-            <h1>All Movies</h1>
-                <hr>
-            <div class="row mb-3">
-                <div class="col-md-2">
-                    @auth
-                    <a href="{{ route('addMovieForm') }}" class="btn btn-secondary">Add movie</a>
-                    @endauth
+            @if($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
                 </div>
+            @endif
+            <div class="row mb-3">
+               <div class="col-md-10 d-flex align-items-center">
+                   <h1>All Movies</h1>
+                   @auth
+                       <a href="{{ route('addMovieForm') }}" class="ms-3" title="Add new movie"><h3><i class="bi bi-patch-plus"></i></h3></a>
+                   @endauth
+               </div>
             </div>
-            @foreach($movies as $m)
+
+            <?php $counter = 0; ?>
+            @foreach($movies as $key => $m)
                 <div class="row mb-5">
                     <div class="col-md-2">
                         <img src="data:image/jpeg;base64,{{ base64_encode($m->poster) }}" alt="Opis obrazu" class="poster-small">
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <div class="mb-3">
                             <a href="{{ route('showMovie', ['id' => $m->id]) }}" class="text-decoration-none title-movie"><h3>{{$m->title}}</h3></a>
+                        </div>
+                        <div class="mb-3">
+                            <h5>{{$m->description}}</h5>
+                        </div>
+                        <div class="mb-3">
+                            <p>{{$m->release_date}}</p>
                         </div>
                         <div class="mb-2">
                             <img src="{{asset('img/Gold_Star.png')}}" alt="star" class="little-star">
                             <span class="ml-2">{{number_format($m->avg,1)}}</span>
                         </div>
-                        <div class="mb-2">
+                        <div class="mb-2 col-md-1">
                             @auth
-                                @if(!$m->isFav)
-                                    <form method="POST" action="{{ route('addToCollection', ['id' => $m->id,'name' => 'favorite']) }}">
-                                        @csrf
-                                        <button type="submit" class="btn btn-outline-success">Favorite</button>
-                                    </form>
-                                @else
-                                    <form method="POST" action="{{ route('deleteFromCollection', ['id' => $m->id,'name' => 'favorite']) }}">
-                                        @csrf
-                                        <button type="submit" class="btn btn-success">Delete from favorite</button>
-                                    </form>
-                                @endif<br>
-                                @if(!$m->isWatch)
-                                    <form method="POST" action="{{ route('addToCollection', ['id' => $m->id,'name' => 'toWatch']) }}">
-                                        @csrf
-                                        <button type="submit" class="btn btn-outline-info">To watch</button>
-                                    </form>
-                                    @else
+                                <div class="d-flex justify-content-between">
+                                    @if(!$m->isFav)
                                         <form method="POST" action="{{ route('addToCollection', ['id' => $m->id,'name' => 'favorite']) }}">
                                             @csrf
-                                            <button type="submit" class="btn btn-info">Delete from to watch</button>
+                                            <button type="submit" class="btn" title="Dodaj do ulubionych"><h4><i class="bi bi-heart"></i></h4></button>
                                         </form>
-                                @endif
+                                    @else
+                                        <form method="POST" action="{{ route('deleteFromCollection', ['id' => $m->id,'name' => 'favorite']) }}">
+                                            @csrf
+                                            <button type="submit" class="btn" title="Usuń z ulubionych"><h4><i class="bi bi-heart-fill"></i></h4></button>
+                                        </form>
+                                    @endif
+
+                                    @if(!$m->isWatch)
+                                        <form method="POST" action="{{ route('addToCollection', ['id' => $m->id,'name' => 'toWatch']) }}">
+                                            @csrf
+                                            <button type="submit" class="btn" title="Dodaj do obejrzenia"><h4><i class="bi bi-stopwatch"></i></h4></button>
+                                        </form>
+                                    @else
+                                        <form method="POST" action="{{ route('deleteFromCollection', ['id' => $m->id,'name' => 'toWatch']) }}">
+                                            @csrf
+                                            <button type="submit" class="btn" title="Usuń z do obejrzenia"><h4><i class="bi bi-stopwatch-fill"></i></h4></button>
+                                        </form>
+                                    @endif
+                                </div>
                             @endauth
                         </div>
-
+                    </div>
+                    <div class="col-md-1 offset-md-3 text-right">
+                        <p class="moviePlaceNumber ms-5">{{ ++$counter }}</p>
+                        <p class="moviePlaceText ms-3">place</p>
                     </div>
                 </div>
             @endforeach

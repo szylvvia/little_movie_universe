@@ -7,6 +7,7 @@ use App\Models\Collection;
 use App\Models\Movie;
 use App\Models\Rate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
@@ -18,7 +19,9 @@ class MovieController extends Controller
     {
         $user = auth()->user();
         $movies = Movie::where('status','verified')->get();
-
+        $movies->each(function ($movie) {
+            $movie->release_date = Carbon::parse($movie->release_date)->format('d.m.Y');
+        });
         foreach ($movies as $movie)
         {
             $averageRating = Rate::where('movie_id', $movie->id)->avg('rate');
@@ -189,7 +192,9 @@ class MovieController extends Controller
             $userRate = Rate::where('user_id', $user_id)->where('movie_id', $id)->first();
         }
         $movie = Movie::find($id);
-        return view("showMovie", compact("movie","userRate"));
+        $movie->release_date = Carbon::parse($movie->release_date)->format('d.m.Y');
+        $avgRate = $this->avgMovie($id);
+        return view("showMovie", compact("movie","userRate","avgRate"));
     }
 
     public function deleteMovie($id)
@@ -283,14 +288,7 @@ class MovieController extends Controller
 
     public function avgMovie($id)
     {
-        $rates = Rate::where('movie_id', $id)->pluck('rate');
-
-        if ($rates->count() > 0) {
-            $avg = $rates->avg();
-            return $avg;
-        } else {
-            return 0;
-        }
+        return Rate::where('movie_id', $id)->avg('rate');
     }
 
     protected function validatorCollection(array $data)

@@ -19,25 +19,46 @@ class HomeController extends Controller
         $quiz = Quiz::where('start_date', '<=', $currentDate)
             ->whereDate('end_date', '>=', $currentDate)
             ->first();
-
-        $votes = $quiz->answer()->count();
-        $statMap = [];
-
-        foreach ($quiz->question()->get() as $q)
-        {
-            $answer = $q->answer()->count();
-            $stat = ($answer/$votes)*100;
-            $statMap[$q->id] = $stat;
-        }
-
         $isUserVoted = null;
-        if(auth()->user())
+        $statMap = null;
+        $latestQuiz = null;
+        $statMapLatest = null;
+        if($quiz)
         {
-            if(auth()->user()->id)
+            $votes = $quiz->answer()->count();
+            $statMap = [];
+
+            foreach ($quiz->question()->get() as $q)
             {
-                $isUserVoted = Answer::where(['user_id'=>auth()->user()->id, 'quiz_id'=>$quiz->id])->first();
+                $answer = $q->answer()->count();
+                $stat = ($answer/$votes)*100;
+                $statMap[$q->id] = $stat;
+            }
+
+            if(auth()->user())
+            {
+                if(auth()->user()->id)
+                {
+                    $isUserVoted = Answer::where(['user_id'=>auth()->user()->id, 'quiz_id'=>$quiz->id])->first();
+                }
             }
         }
-        return view('home',compact('quiz', 'isUserVoted','statMap'));
+        else
+        {
+            $latestQuiz = Quiz::latest('end_date')->first();
+            if($latestQuiz)
+            {
+                $votes = $latestQuiz->answer()->count();
+                $statMapLatest = [];
+
+                foreach ($latestQuiz->question()->get() as $q)
+                {
+                    $answer = $q->answer()->count();
+                    $stat = ($answer/$votes)*100;
+                    $statMapLatest[$q->id] = $stat;
+                }
+            }
+        }
+        return view('home',compact('quiz', 'isUserVoted', 'statMap','latestQuiz','statMapLatest'));
     }
 }

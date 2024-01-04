@@ -27,11 +27,10 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row mt-1">
             <div class="col-md-6">
-                <a href="{{route("addQuizForm")}}" class="btn btn-outline-info">Create new quiz</a>
+                <a href="{{route("addQuizForm")}}" class="btn btn-outline-info"><i class="bi bi-patch-plus"></i> Create new quiz</a>
             </div>
-
         </div>
 
         <div class="row mt-4">
@@ -41,8 +40,8 @@
                 <thead>
                 <tr>
                     <th scope="col">ID</th>
-                    <th scope="col">Title</th>
-                    <th scope="col" class="col-md-1">Release date</th>
+                    <th scope="col" class="col-md-3">Title</th>
+                    <th scope="col" class="col-md-2">Release date</th>
                     <th scope="col" class="col-md-3">Description</th>
                     <th scope="col" class="col-md-3">Date added</th>
                     <td></td>
@@ -86,13 +85,13 @@
                     <thead>
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">Name and surname</th>
+                        <th scope="col" class="col-md-2">Name and surname</th>
                         <th scope="col">Gender</th>
                         <th scope="col">Profession</th>
-                        <th scope="col">Birth date</th>
-                        <th scope="col">Death date</th>
-                        <th scope="col">Description</th>
-                        <td></td>
+                        <th scope="col" class="col-md-2">Birth date</th>
+                        <th scope="col" class="col-md-2" >Death date</th>
+                        <th scope="col" class="col-md-4" >Description</th>
+                        <td class="col-md-1" ></td>
                     </tr>
                     </thead>
                     <tbody>
@@ -135,11 +134,11 @@
                     <thead>
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">Tittle</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Start date</th>
-                        <th scope="col">End date</th>
-                        <th scope="col">Options</th>
+                        <th scope="col" class="col-md-2">Tittle</th>
+                        <th scope="col" class="col-md-2">Description</th>
+                        <th scope="col" class="col-md-2">Start date</th>
+                        <th scope="col" class="col-md-2">End date</th>
+                        <th scope="col" class="col-md-3">Options</th>
                         <td></td>
                     </tr>
                     </thead>
@@ -152,7 +151,7 @@
                             <td>{{$q->start_date}}</td>
                             <td>{{$q->end_date}}</td>
                             <td>
-                                <div class="d-flex flex-wrap" style="gap: 10px;">
+                                <div class="d-flex flex-wrap" style="gap: 2px;">
                                     @foreach($q->question as $qu)
                                         <div class="group"></div>
                                         <p>{{$qu->question}}</p>
@@ -161,7 +160,7 @@
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    <a href="{{ route('editQuizForm',['id' => $q->id])}} " class="text-decoration-none"><button type="submit" class="btn btn-outline-warning mx-1">Edit quiz</button></a>
+                                    <a href="{{ route('editQuizForm',['id' => $q->id])}} " class="text-decoration-none"><button type="submit" class="btn btn-outline-warning mx-1">Edit</button></a>
                                     <form method="POST" action="{{ route('verifyArtist', ['id' => $a->id, 'decision' =>'rejected']) }}">
                                         @csrf
                                         <button type="submit" class="btn btn-outline-danger mx-1">Delete</button>

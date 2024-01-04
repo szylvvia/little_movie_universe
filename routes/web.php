@@ -32,8 +32,8 @@ Route::get('/searchReturnJson/{string}', [App\Http\Controllers\SearchController:
 Auth::routes();
 Route::get('/addArtist', [App\Http\Controllers\ArtistController::class, 'addArtistForm'])->name('addArtistForm');
 Route::post('/addArtist', [App\Http\Controllers\ArtistController::class, 'addArtist'])->name('addArtist');
-Route::get('/editArtist{id}', [App\Http\Controllers\ArtistController::class, 'editArtistForm'])->name('editArtistForm');
-Route::post('/editArtist{id}', [App\Http\Controllers\ArtistController::class, 'editArtist'])->name('editArtist');
+Route::get('/editArtist/{id}', [App\Http\Controllers\ArtistController::class, 'editArtistForm'])->name('editArtistForm');
+Route::post('/editArtist/{id}', [App\Http\Controllers\ArtistController::class, 'editArtist'])->name('editArtist');
 
 Route::get('/addMovie', [App\Http\Controllers\MovieController::class, 'addMovieForm'])->name('addMovieForm');
 Route::post('/addMovie', [App\Http\Controllers\MovieController::class, 'addMovie'])->name('addMovie');

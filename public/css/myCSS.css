@@ -111,4 +111,29 @@ iframe
     align-items: center;
 }
 
+.moviePlaceNumber
+{
+    font-size: 100px;
+    margin-bottom: -50px;
+    margin-top: -20px;
+    font-weight: bold;
+    color: #F8D64E;
+}
 
+.moviePlaceText
+{
+    margin-top: 0;
+    font-size: 40px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #F8D64E;
+}
+.imageArtistMini
+{
+    height: 100px;
+}
+
+.imageArtistMedium {
+    height: 200px;
+    width: 100px;
+}
