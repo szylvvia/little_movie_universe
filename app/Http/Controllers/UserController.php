@@ -12,6 +12,8 @@ class UserController extends Controller
 {
     public function getUserId()
     {
+        $this->middleware('auth');
+
         if(auth()->user()==null)
         {
             return null;
@@ -34,6 +36,8 @@ class UserController extends Controller
 
     public function deleteUser()
     {
+        $this->middleware('auth');
+
         $id = $this->getUserId();
         $toDelete = User::find($id);
         if($toDelete)
@@ -46,6 +50,8 @@ class UserController extends Controller
 
     public function editUserForm()
     {
+        $this->middleware('auth');
+
         $id = $this->getUserId();
         $user = User::find($id);
         return view("editUser", compact("user"));
@@ -86,7 +92,7 @@ class UserController extends Controller
     }
     public function editUser(Request $request)
     {
-        //dd($request);
+        $this->middleware('auth');
         $id = $this->getUserId();
         $user = User::find($id);
 
