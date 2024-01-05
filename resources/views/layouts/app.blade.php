@@ -20,32 +20,32 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-custom ">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand navbar-custom" href="{{ url('/') }}">
                     @yield('logo')Little Movies Universe
                 </a>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                        Movies</a>
+                        Filmy</a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ route('showMovies') }}">Show movies</a>
+                            <a class="dropdown-item" href="{{ route('showMovies') }}">Ranking filmów</a>
                             @auth
                                 <a class="dropdown-item" href="{{ route('addMovieForm') }}">
-                                    {{ __('Add new movie') }}
+                                    {{ __('Dodaj nowy film') }}
                                 </a>
                             @endauth
                         </div>
                     </li>
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            Artist</a>
+                            Artyści</a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ route('showArtists') }}">Show artists</a>
+                            <a class="dropdown-item" href="{{ route('showArtists') }}">Wszyscy artyści</a>
                             @auth
                                 <a class="dropdown-item" href="{{ route('addArtistForm') }}">
-                                    {{ __('Add new artist') }}
+                                    {{ __('Dodaj nowego artystę') }}
                                 </a>
                             @endauth
                         </div>
@@ -58,11 +58,11 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto"></ul>
 
-                    <form class="position-relative w-75" id="searchForm" method="get" action="{{ route('search',['string'=>"string"]) }}">
+                    <form class="position-relative w-75" id="searchForm" method="get">
                         @csrf
-                        <div class="d-flex">
-                            <input required class="form-control mx-2 w-75" type="search" placeholder="Search" aria-label="Search" id="searchInput" name="string" autocomplete="off">
-                            <button type="submit" class="btn text-info" id="searchButton"><i class="bi bi-search"></i></button>
+                        <div class="d-flex g-0 mb-0">
+                            <input required class="form-control mx-2 w-75" type="search" placeholder="Wyszukaj" aria-label="Wyszukaj" id="searchInput" name="string" autocomplete="off">
+                            <button type="submit" class="btn mt-2" id="searchButton"><h5><i class="bi bi-search searchIcon"></i></h5></button>
                         </div>
                         <ul id="searchResultsList" class="list-group mx-2 w-75">
                         </ul>
@@ -72,13 +72,13 @@
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Logowanie') }}</a>
                                 </li>
                             @endif
 
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Rejestracja') }}</a>
                                 </li>
                             @endif
                         @else
@@ -89,19 +89,19 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
                                     <a class="dropdown-item" href="{{ route('showUser',['id'=>auth()->user()->id]) }}">
-                                        {{ __('Profile') }}
+                                        {{ __('Profil użytkownika') }}
                                     </a>
                                     @if(auth()->user()->role=='admin')
                                         <a class="dropdown-item" href="{{ route('showAdminPanel') }}">
-                                            {{ __('Admin Panel') }}
+                                            {{ __('Panel administratora') }}
                                         </a>
                                     @endif
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Wylogowanie') }}
+                                    </a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
@@ -113,12 +113,11 @@
             </div>
         </nav>
 
-        <main class="py-4 mb-5">
+        <main class="py-4">
             @yield('content')
         </main>
     </div>
-
-    <footer class="bg-white text-dark text-center py-2 border-top shadow-sm fixed-bottom pt-3">
+    <footer class="text-center py-2 pt-4 footer-custom">
         <div class="container">
             <p>&copy; 2024 Little Movie Universe</p>
         </div>

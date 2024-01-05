@@ -21,11 +21,6 @@
             @endif
         </div>
     </div>
-    <div class="row justify-content-center">
-        <div class="col-md-6 text-center">
-            <p>lorem ipsum</p>
-        </div>
-    </div>
     @if($quiz)
         <div class="row justify-content-center">
             <div class="col-md-6 text-center">
@@ -84,21 +79,21 @@
     @else
         <div class="row justify-content-center">
             <div class="col-md-6 text-center">
-                <h5>No quizzes available</h5>
+                <h6><i>Dziś nie ma dostępnych quizów. Wpadnij jutro!</i></h6>
             </div>
         </div>
     @endif
     @if($latestQuiz)
         <div class="row justify-content-center">
-            <div class="col-md-6 text-center">
-                <h1>Statistics of latest Quiz</h1>
+            <div class="col-md-6 text-center custom-header">
+                <h1>Wyniki ostatniego quizu</h1>
                 <h5>{{$latestQuiz->title}}</h5>
             </div>
         </div>
         <div class="row mt-3 justify-content-center">
                 @foreach($latestQuiz->question as $q)
-                    <div class="col-md-3 mt-3 text-center">
-                        <img src="data:image/jpeg;base64,{{ base64_encode($q->image) }}" alt="Opis obrazu">
+                    <div class="col-md-3 mt-3 text-center custom-header">
+                        <img class="quiz-image" src="data:image/jpeg;base64,{{ base64_encode($q->image) }}" alt="Opis obrazu">
                         <h5 class="mt-2">{{$q->question}}</h5>
                         <p>{{ number_format($statMapLatest[$q->id], 1, '.', '') ?? '0' }}%</p>
                     </div>

@@ -25,7 +25,7 @@ class Movie extends Model
 
     public function artist()
     {
-        return $this->belongsToMany(Artist::class,'movie_has_actors', 'movie_id', 'artist_id');
+        return $this->belongsToMany(Artist::class,'movie_has_artist', 'movie_id', 'artist_id');
     }
 
     public function rate()

@@ -14,7 +14,7 @@ class MovieHasArtistSeeder extends Seeder
             'updated_at' => now()
         ];
 
-        $movieHasActors = [
+        $movieHasArtist = [
             // Movie 1
             array_merge($common, ['movie_id' => 1, 'artist_id' => 1]),
             array_merge($common, ['movie_id' => 1, 'artist_id' => 9]),
@@ -39,6 +39,6 @@ class MovieHasArtistSeeder extends Seeder
             array_merge($common, ['movie_id' => 7, 'artist_id' => 8]),
         ];
 
-        DB::table('movie_has_actors')->insert($movieHasActors);
+        DB::table('movie_has_artist')->insert($movieHasArtist);
     }
 }
