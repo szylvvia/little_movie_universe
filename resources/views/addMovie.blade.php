@@ -7,11 +7,11 @@
                     {{ session('success') }}
                 </div>
             @endif
-            <h1>Add Movie</h1>
-            <form method="POST" action="{{ route('addMovie') }}" enctype="multipart/form-data">
+            <h1>Dodaj nowy film</h1>
+            <form method="POST" class="form" action="{{ route('addMovie') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="row mb-3">
-                    <label for="title" class="col-md-4 col-form-label text-md-end">{{ __('Tittle') }}</label>
+                    <label for="title" class="col-md-4 col-form-label text-md-end">{{ __('Tytuł') }}</label>
                     <div class="col-md-6">
                         <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ old('title') }}" required autocomplete="title" autofocus>
                         @error('title')
@@ -22,7 +22,7 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="releaseDate" class="col-md-4 col-form-label text-md-end">{{ __('Release date') }}</label>
+                    <label for="releaseDate" class="col-md-4 col-form-label text-md-end">{{ __('Data premiery') }}</label>
                     <div class="col-md-6">
                         <input id="releaseDate" min="1888-10-14" max="2099-12-31" type="date" class="form-control @error('releaseDate') is-invalid @enderror" name="releaseDate" value="{{ old('releaseDate') }}" required autocomplete="releaseDate" autofocus>
                         @error('releaseDate')
@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="description" class="col-md-4 col-form-label text-md-end">{{ __('Description') }}</label>
+                    <label for="description" class="col-md-4 col-form-label text-md-end">{{ __('Opis filmu') }}</label>
                     <div class="col-md-6">
                         <textarea id="description" class="form-control @error('description') is-invalid @enderror" name="description"  autocomplete="description" autofocus>{{ old('description') }}</textarea>
                         @error('description')
@@ -45,7 +45,7 @@
                 </div>
 
                 <div class="row mb-3">
-                    <label for="trailerLink" class="col-md-4 col-form-label text-md-end">{{ __('Trailer Link') }}</label>
+                    <label for="trailerLink" class="col-md-4 col-form-label text-md-end">{{ __('Link do trailera') }}</label>
                     <div class="col-md-6">
                         <input id="trailerLink" type="text" class="form-control @error('trailerLink') is-invalid @enderror" name="trailerLink" value="{{ old('trailerLink') }}" required autocomplete="trailerLink" autofocus>
                         @error('trailerLink')
@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="row mb-3">
-                    <label for="soundtrackLink" class="col-md-4 col-form-label text-md-end">{{ __('Soundtrack Link') }}</label>
+                    <label for="soundtrackLink" class="col-md-4 col-form-label text-md-end">{{ __('Link do soundtracka') }}</label>
                     <div class="col-md-6">
                         <input id="soundtrackLink" type="text" class="form-control @error('soundtrackLink') is-invalid @enderror" name="soundtrackLink" value="{{ old('soundtrackLink') }}" required autocomplete="soundtrackLink" autofocus>
                         @error('soundtrackLink')
@@ -68,7 +68,7 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="mySelectInput" class="col-md-4 col-form-label text-md-end">{{ __('Artists') }}</label>
+                    <label for="mySelectInput" class="col-md-4 col-form-label text-md-end">{{ __('Artyści') }}</label>
                     <div class="col-md-6">
                         <select multiple id="mySelectInput" class="form-control @error('soundtrack_link') is-invalid @enderror" name="artists[]" required autocomplete="artists" autofocus>
                             @foreach($artist as $a)
@@ -85,7 +85,7 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="poster" class="col-md-4 col-form-label text-md-end">{{ __('Poster') }}</label>
+                    <label for="poster" class="col-md-4 col-form-label text-md-end">{{ __('Plakat') }}</label>
                     <div class="col-md-6">
                         <input id="poster" required type="file" class="form-control @error('poster') is-invalid @enderror" name="poster" value="{{ old('poster') }}" autocomplete="poster" autofocus>
                         <div id="jsPosterErrorMessages" role="alert"></div>
@@ -97,7 +97,7 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="images" class="col-md-4 col-form-label text-md-end">{{ __('Images') }}</label>
+                    <label for="images" class="col-md-4 col-form-label text-md-end">{{ __('Galeria fotosów') }}</label>
                     <div class="col-md-6">
                         <input multiple required id="images" type="file" class="form-control @error('images') is-invalid @enderror" name="images[]" autocomplete="images" autofocus>
                         <div id="jsImagesErrorMessages" role="alert"></div>
@@ -115,8 +115,8 @@
                 </div>
                 <div class="row mb-0">
                     <div class="col-md-6 offset-md-4">
-                        <button type="submit" class="btn btn-primary">
-                            {{ __('Add movie') }}
+                        <button type="submit" class="btn add-button">
+                            <i class="bi bi-plus"></i>{{ __(' Dodaj film') }}
                         </button>
                     </div>
                 </div>

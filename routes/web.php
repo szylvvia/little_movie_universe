@@ -60,7 +60,7 @@ Route::post('/addQuiz', [App\Http\Controllers\QuizController::class, 'addQuiz'])
 Route::post('/addAnswer', [App\Http\Controllers\QuizController::class, 'addAnswer'])->name('addAnswer');
 Route::post('/deleteAnswer', [App\Http\Controllers\QuizController::class, 'deleteAnswer'])->name('deleteAnswer');
 
-Route::delete("/deleteQuiz/{id}", [App\Http\Controllers\QuizController::class, 'deleteQuiz'])->name('deleteQuiz');
+Route::post("/deleteQuiz/{id}", [App\Http\Controllers\QuizController::class, 'deleteQuiz'])->name('deleteQuiz');
 Route::get('/editQuiz/{id}', [App\Http\Controllers\QuizController::class, 'editQuizForm'])->name('editQuizForm');
 Route::post('/editQuiz/{id}', [App\Http\Controllers\QuizController::class, 'editQuiz'])->name('editQuiz');
 

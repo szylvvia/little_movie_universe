@@ -22,18 +22,18 @@
         </div>
     </div>
     @if($quiz)
-        <div class="row justify-content-center">
-            <div class="col-md-6 text-center">
+        <div class="row justify-content-center custom-header">
+            <div class="col-md-6 text-center custom-header">
                 <h1>{{$quiz->title}}</h1>
                 <h5>{{$quiz->description}}</h5>
             </div>
         </div>
-        <div class="row mt-3 justify-content-center">
+        <div class="row mt-3 justify-content-center custom-text">
             @guest
                 @foreach($quiz->question as $q)
-                    <div class="col-md-3 mt-3 text-center">
-                        <img src="data:image/jpeg;base64,{{ base64_encode($q->image) }}" alt="Opis obrazu">
-                        <h5 class="mt-2">{{$q->question}}</h5>
+                    <div class="col-md-3 mt-3 text-center custom-text">
+                        <img class="quiz-image" src="data:image/jpeg;base64,{{ base64_encode($q->image) }}" alt="Opis obrazu">
+                        <h5 class="mt-3">{{$q->question}}</h5>
                         <p>{{ number_format($statMap[$q->id], 1, '.', '') ?? '0' }}%</p>
                     </div>
                 @endforeach
@@ -42,32 +42,32 @@
                 @if($isUserVoted)
                    @foreach($quiz->question as $q)
                        @if($isUserVoted->question_id==$q->id)
-                           <div class="col-md-3 mt-3 text-center">
+                           <div class="col-md-3 mt-3 text-center custom-text vote">
                                <form method="POST" action="{{ route('deleteAnswer', ['question_id'=>$q->id, 'quiz_id'=>$quiz->id]) }}">
                                    @csrf
                                    <button type="submit" class="btn">
-                                       <img src="data:image/jpeg;base64,{{ base64_encode($q->image) }}" alt="Opis obrazu">
-                                       <h5 class="mt-2"><i class="bi bi-bookmark-star-fill"></i>{{$q->question}}</h5>
+                                       <img class="quiz-image quiz-vote" src="data:image/jpeg;base64,{{ base64_encode($q->image) }}" alt="Opis obrazu">
+                                       <h5 class="mt-3"><i class="bi bi-bookmark-star-fill"></i>{{$q->question}}</h5>
                                        <p>{{ number_format($statMap[$q->id], 1, '.', '') ?? '0' }}%</p>
                                    </button>
                                </form>
                            </div>
                             @else
-                                <div class="col-md-3 mt-3 text-center">
-                                    <img src="data:image/jpeg;base64,{{ base64_encode($q->image) }}" alt="Opis obrazu">
-                                    <h5 class="mt-2">{{$q->question}}</h5>
+                                <div class="col-md-3 mt-3 text-center custom-text">
+                                    <img class="quiz-image" src="data:image/jpeg;base64,{{ base64_encode($q->image) }}" alt="Opis obrazu">
+                                    <h5 class="mt-3">{{$q->question}}</h5>
                                     <p>{{ number_format($statMap[$q->id], 1, '.', '') ?? '0' }}%</p>
                                 </div>
                           @endif
                     @endforeach
                 @else
                     @foreach($quiz->question as $q)
-                        <div class="col-md-3 mt-3 text-center">
+                        <div class="col-md-3 mt-3 text-center custom-text">
                             <form method="POST" action="{{ route('addAnswer', ['question_id'=>$q->id, 'quiz_id'=>$quiz->id]) }}">
                                 @csrf
                                 <button type="submit" class="btn">
-                                    <img src="data:image/jpeg;base64,{{ base64_encode($q->image) }}" alt="Opis obrazu">
-                                    <h5 class="mt-2">{{$q->question}}</h5>
+                                    <img class="quiz-image" src="data:image/jpeg;base64,{{ base64_encode($q->image) }}" alt="Opis obrazu">
+                                    <h5 class="mt-3">{{$q->question}}</h5>
                                     <p>{{ number_format($statMap[$q->id], 1, '.', '') ?? '0' }}%</p>
                                 </button>
                             </form>
@@ -94,14 +94,10 @@
                 @foreach($latestQuiz->question as $q)
                     <div class="col-md-3 mt-3 text-center custom-header">
                         <img class="quiz-image" src="data:image/jpeg;base64,{{ base64_encode($q->image) }}" alt="Opis obrazu">
-                        <h5 class="mt-2">{{$q->question}}</h5>
+                        <h5 class="mt-3">{{$q->question}}</h5>
                         <p>{{ number_format($statMapLatest[$q->id], 1, '.', '') ?? '0' }}%</p>
                     </div>
                 @endforeach
-        </div>
-    @else
-        <div class="row mt-3 justify-content-center">
-            <h5>No quizzes before</h5>
         </div>
     @endif
 

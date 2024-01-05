@@ -3,13 +3,13 @@
 }
 .customError
 {
-    color: red;
+    color: #c03939;
     font-weight: bold;
 }
 
 #error
 {
-    background-color: red !important;
+    background-color: #c03939 !important;
 }
 
 .checkbox-container
@@ -243,10 +243,223 @@ nav
 
 .custom-header
 {
-    text-shadow: 5px 5px 8px rgba(232, 230, 213, 0.1) !important;
+    text-shadow: 5px 5px 8px rgba(232, 230, 213, 0.1) ;
 }
 
 .quiz-image
 {
-    box-shadow: 0px 5px 5px rgba(232, 230, 213, 0.1), 0px -5px 5px rgba(232, 230, 213, 0.1), 5px 0px 5px rgba(232, 230, 213, 0.1), -5px 0px 5px rgba(232, 230, 213, 0.1);}
+    box-shadow: 0px 5px 5px rgba(232, 230, 213, 0.1), 0px -5px 5px rgba(232, 230, 213, 0.1), 5px 0px 5px rgba(232, 230, 213, 0.1), -5px 0px 5px rgba(232, 230, 213, 0.1);
+}
 
+.navbar-toggler-icon
+{
+    color: #E8E6D5;
+    border-color: #233858 !important;
+}
+
+.customToggler
+{
+    color: #E8E6D5 !important;
+    border-color: #5A7194 !important;
+}
+
+.customToggler:focus {
+    color: #5A7194 !important;
+    border-color: #5A7194 !important;
+}
+
+.icon-color
+{
+    color: #E8E6D5;
+}
+
+.icon-color:hover
+{
+    color: #6dae7b;
+}
+
+.title-movie
+{
+    color: #E8E6D5 !important;
+    text-shadow: 2px 2px 8px rgba(232, 230, 213, 0.1) !important;
+}
+
+.movie-fav
+{
+    color: #c03939;
+}
+
+.movie-watch
+{
+    color: #6dae7b;
+}
+
+.delete-icon
+{
+    color: #c03939;
+}
+
+.edit-icon
+{
+    color: #F8D64E;
+}
+.add-icon
+{
+    color: #6dae7b;
+}
+
+.custom-header h1 {
+    color: #E8E6D5;
+}
+
+.custom-header h5 {
+    color: #E8E6D5;
+}
+
+.custom-text h5 {
+    color: #E8E6D5;
+}
+
+.custom-text h3
+{
+    color: #E8E6D5;
+}
+
+.custom-text p {
+    color: #E8E6D5;
+}
+
+.custom-header-latest h1 {
+    color: #E8E6D5;
+}
+
+.custom-header-latest h5 {
+    color: #E8E6D5;
+}
+
+.quiz-vote
+{
+    box-shadow: 0px 5px 5px rgba(248, 214, 78, 0.5), 0px -5px 5px rgba(248, 214, 78, 0.5), 5px 0px 5px rgba(248, 214, 78, 0.5), -5px 0px 5px rgba(248, 214, 78, 0.5);
+}
+
+.vote h5, .vote p
+{
+    color: #F8D64E;
+}
+
+.form input
+{
+    background-color: #94A5BE;
+    border-color: #94A5BE;
+    color: #E8E6D5;
+}
+.form input:focus
+{
+    background-color: #94A5BE;
+    border-color: #94A5BE;
+    color: #E8E6D5;
+}
+
+.form textarea
+{
+    background-color: #94A5BE;
+    border-color: #94A5BE;
+    color: #E8E6D5;
+}
+.form textarea:focus
+{
+    background-color: #94A5BE;
+    border-color: #94A5BE;
+    color: #E8E6D5;
+}
+
+.form select
+{
+    background-color: #94A5BE;
+    border-color: #94A5BE;
+    color: #E8E6D5;
+}
+.form select:focus
+{
+    background-color: #94A5BE;
+    border-color: #94A5BE;
+    color: #E8E6D5;
+}
+
+.add-button
+{
+    background-color: #94A5BE !important;
+    color: #E8E6D5 !important;
+}
+
+.add-button:hover
+{
+    color: #233858 !important;
+}
+
+.modal-header {
+    background-color: #5A7194;
+    color: #E8E6D5;
+    border-color: #5A7194 !important;
+    margin: 0 !important;
+}
+
+.modal-body
+{
+    background-color: #5A7194;
+    color: #E8E6D5;
+    border-color: #5A7194 !important;
+    margin: 0 !important;
+}
+
+.modal-footer
+{
+    background-color: #5A7194 !important;
+    color: #E8E6D5;
+    border-color: #5A7194 !important;
+    margin: 0 !important;
+}
+
+.modal-body {
+    margin: 0;
+}
+
+.table-color th,
+.table-color td {
+    background-color: #94A5BE !important;
+    border-color: #94A5BE !important;
+    /*color: #E8E6D5 !important;*/
+}
+.custom-tr th, .custom-tr td {
+    background-color:  #5A7194 !important;
+}
+.admin-button-delete {
+    background-color: transparent;
+    border: 2px solid #c03939 !important;
+    color: #c03939 !important;
+}
+.admin-button-delete:hover {
+    background-color: #c03939 !important;
+    color: #E8E6D5 !important;
+}
+
+.admin-button-edit {
+    background-color: transparent;
+    border: 2px solid #F8D64E !important;
+    color: #F8D64E !important;
+}
+.admin-button-edit:hover {
+    background-color: #F8D64E !important;
+    color: #E8E6D5 !important;
+}
+.admin-button
+{
+    font-weight: bold !important;
+    border-width: 2px !important;
+    border-style: solid !important;
+}
+
+.add-icon-admin
+{
+    color: #329c40;
+}

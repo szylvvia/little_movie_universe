@@ -51,16 +51,15 @@
                         </div>
                     </li>
                 </ul>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
+                <button class="navbar-toggler ms-3 customToggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}" >
+                    <i class="customToggler bi bi-list"></i>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto"></ul>
-
                     <form class="position-relative w-75" id="searchForm" method="get">
                         @csrf
-                        <div class="d-flex g-0 mb-0">
+                        <div class="d-flex g-0 mb-0 ms-4">
                             <input required class="form-control mx-2 w-75" type="search" placeholder="Wyszukaj" aria-label="Wyszukaj" id="searchInput" name="string" autocomplete="off">
                             <button type="submit" class="btn mt-2" id="searchButton"><h5><i class="bi bi-search searchIcon"></i></h5></button>
                         </div>
@@ -119,7 +118,7 @@
     </div>
     <footer class="text-center py-2 pt-4 footer-custom">
         <div class="container">
-            <p>&copy; 2024 Little Movie Universe</p>
+            <p>&copy; 2024 Little Movies Universe</p>
         </div>
     </footer>
 <script src="{{ asset('js/search.js') }}"></script>

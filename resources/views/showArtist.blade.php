@@ -5,7 +5,7 @@
         <div class="card-body">
                 <div class="row justify-content-center">
                     <div class="col-md-12 text-center">
-                            <img src="data:image/jpeg;base64,{{ base64_encode($artist->image) }}" alt="Opis obrazu" class="mx-auto d-block">
+                            <img src="data:image/jpeg;base64,{{ base64_encode($artist->image) }}" alt="Opis obrazu" class="mx-auto d-block quiz-image">
                         <div class="row mt-3 justify-content-center">
                             <h1>{{$artist->name}} {{$artist->surname}}</h1>
                             @auth

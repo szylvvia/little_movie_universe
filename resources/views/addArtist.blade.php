@@ -10,10 +10,10 @@
             @endif
             <h1>Add artist</h1>
                 @auth
-            <form method="POST" action="{{ route('addArtist') }}" enctype="multipart/form-data">
+            <form class="form" method="POST" action="{{ route('addArtist') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="row mb-3">
-                    <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
+                    <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Imie') }}</label>
                     <div class="col-md-6">
                         <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
 
@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="surname" class="col-md-4 col-form-label text-md-end">{{ __('Surname') }}</label>
+                    <label for="surname" class="col-md-4 col-form-label text-md-end">{{ __('Nazwisko') }}</label>
 
                     <div class="col-md-6">
                         <input id="surname" type="text" class="form-control @error('surname') is-invalid @enderror" name="surname" value="{{ old('surname') }}" required autocomplete="surname" autofocus>
@@ -38,7 +38,7 @@
                 </div>
 
                 <div class="row mb-3">
-                    <label for="gender" class="col-md-4 col-form-label text-md-end">{{ __('Gender') }}</label>
+                    <label for="gender" class="col-md-4 col-form-label text-md-end">{{ __('Płeć') }}</label>
                     <div class="col-md-6">
                         <select id="gender" class="form-control @error('gender') is-invalid @enderror" name="gender" value="{{ old('gender') }}" autocomplete="gender" autofocus required>
                             <option value="Female">Female</option>
@@ -53,7 +53,7 @@
                 </div>
 
                 <div class="row mb-3">
-                    <label for="birth_date" class="col-md-4 col-form-label text-md-end">{{ __('BirthDate') }}</label>
+                    <label for="birth_date" class="col-md-4 col-form-label text-md-end">{{ __('Data urodzenia') }}</label>
 
                     <div class="col-md-6">
                         <input id="birth_date" type="date" min="18-01-01" max="2099-12-31" class="form-control @error('birth_date') is-invalid @enderror" name="birth_date" value="{{ old('birth_date') }}" required autocomplete="birth_date" autofocus>
@@ -65,7 +65,7 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="death_date" class="col-md-4 col-form-label text-md-end">{{ __('DeathDate') }}</label>
+                    <label for="death_date" class="col-md-4 col-form-label text-md-end">{{ __('Data śmierci') }}</label>
 
                     <div class="col-md-6">
                         <input id="death_date" min="18-01-01" max="2099-12-31" type="date" class="form-control @error('death_date') is-invalid @enderror" name="death_date" value="{{ old('death_date') }}" autocomplete="death_date" autofocus>
@@ -77,7 +77,7 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="description" class="col-md-4 col-form-label text-md-end">{{ __('Decription') }}</label>
+                    <label for="description" class="col-md-4 col-form-label text-md-end">{{ __('Opis artysty') }}</label>
                     <div class="col-md-6">
                         <input id="description" type="text" class="form-control @error('description') is-invalid @enderror" name="description" value="{{ old('description') }}" autocomplete="description" autofocus>
                         @error('description')
@@ -88,14 +88,14 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="profession" class="col-md-4 col-form-label text-md-end">{{ __('Profession') }}</label>
+                    <label for="profession" class="col-md-4 col-form-label text-md-end">{{ __('Zawód') }}</label>
                     <div class="col-md-6">
                         <select id="profession" class="form-control @error('profession') is-invalid @enderror" name="profession" value="{{ old('profession') }}" autocomplete="profession" autofocus required>
-                            <option value="Actor">Actor</option>
-                            <option value="Director">Director</option>
-                            <option value="Screenwriter">Screenwriter</option>
-                            <option value="Musican">Musician</option>
-                            <option value="Producer">Producer</option>
+                            <option value="Actor">Aktor</option>
+                            <option value="Director">Reżyser</option>
+                            <option value="Screenwriter">Scenarzysta</option>
+                            <option value="Musican">Kompozytor</option>
+                            <option value="Producer">Poducent</option>
                         </select>
                         @error('profession')
                         <span class="invalid-feedback" role="alert">
@@ -105,7 +105,7 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="image" class="col-md-4 col-form-label text-md-end">{{ __('Image') }}</label>
+                    <label for="image" class="col-md-4 col-form-label text-md-end">{{ __('Zdjęcie') }}</label>
                     <div class="col-md-6">
                         <input id="image" type="file" class="form-control @error('image') is-invalid @enderror" name="image" value="{{ old('image') }}" autocomplete="image" autofocus>
                         <div id="jsImageErrorMessages" class="customError" role="alert"></div>
@@ -118,8 +118,8 @@
                 </div>
                 <div class="row mb-0">
                     <div class="col-md-6 offset-md-4">
-                        <button type="submit" class="btn btn-primary">
-                            {{ __('Save') }}
+                        <button type="submit" class="btn add-button">
+                            <i class="bi bi-plus"></i>{{ __(' Dodaj artystę') }}
                         </button>
                     </div>
                 </div>

@@ -12,7 +12,7 @@
                     <div class="col-md-10 d-flex align-items-center">
                         <h1>All Artists</h1>
                         @auth
-                            <a href="{{ route('addArtistForm') }}" class="ms-3" title="Add new artist"><h3><i class="bi bi-patch-plus"></i></h3></a>
+                            <a href="{{ route('addArtistForm') }}" class="ms-3" title="Add new artist"><h3><i class="bi bi-plus-circle icon-color"></i></h3></a>
                         @endauth
                     </div>
                 </div>
@@ -23,10 +23,10 @@
                             <a href="{{ route('showArtist', ['id' => $a->id]) }}" class="text-decoration-none">
                                 <div class="col-md-12">
                                     @if($a->image != null)
-                                        <img src="data:image/jpeg;base64,{{ base64_encode($a->image) }}" alt="Opis obrazu">
+                                        <img class="quiz-image" src="data:image/jpeg;base64,{{ base64_encode($a->image) }}" alt="Opis obrazu">
                                     @endif
                                 </div>
-                                <div class="col-md-12 mt-3">
+                                <div class="col-md-12 mt-3 custom-text">
                                     <h3>{{$a->name}} {{$a->surname}}</h3>
                                 </div>
                             </a>

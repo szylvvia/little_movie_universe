@@ -29,21 +29,21 @@
 
         <div class="row mt-1">
             <div class="col-md-6">
-                <a href="{{route("addQuizForm")}}" class="btn btn-outline-info"><i class="bi bi-patch-plus"></i> Create new quiz</a>
+                <a href="{{route("addQuizForm")}}" class="btn add-button"><i class="bi bi-plus"></i> Stwórz nowy quiz</a>
             </div>
         </div>
 
         <div class="row mt-4">
-            <h4>Pending movies</h4>
+            <h4>Oczekujące filmy</h4>
             <div class="row p-4">
-            <table class="table">
+            <table class="table table-color">
                 <thead>
-                <tr>
+                <tr class="custom-tr">
                     <th scope="col">ID</th>
-                    <th scope="col" class="col-md-3">Title</th>
-                    <th scope="col" class="col-md-2">Release date</th>
-                    <th scope="col" class="col-md-3">Description</th>
-                    <th scope="col" class="col-md-3">Date added</th>
+                    <th scope="col" class="col-md-3">Tytuł</th>
+                    <th scope="col" class="col-md-2">Data premiery</th>
+                    <th scope="col" class="col-md-3">Opis filmu</th>
+                    <th scope="col" class="col-md-3">Data dodania</th>
                     <td></td>
                 </tr>
                 </thead>
@@ -59,15 +59,15 @@
                                 <div class="btn-group">
                                     <form method="POST" action="{{ route('verifyMovie', ['id' => $p->id, 'decision' =>'verified']) }}">
                                         @csrf
-                                        <button type="submit" class="btn btn-outline-success mx-1">Verify</button>
+                                        <button type="submit" class="btn mx-1"><h4><i class="bi bi-check-lg add-icon-admin"></i></h4></button>
                                     </form>
                                     <form method="get" action="{{ route('editMovieForm', ['id' => $p->id]) }}">
                                         @csrf
-                                        <button class="btn btn-outline-warning mx-1">Check</button>
+                                        <button class="btn mx-1"><h5><i class="bi bi-pen edit-icon"></i></h5></button>
                                     </form>
                                     <form method="POST" action="{{ route('verifyMovie', ['id' => $p->id, 'decision' =>'rejected']) }}">
                                         @csrf
-                                        <button type="submit" class="btn btn-outline-success mx-1">Reject</button>
+                                        <button type="submit" class="btn mx-1"><h5><i class="bi bi-x-lg delete-icon"></i></h5></button>
                                     </form>
                                 </div>
                             </td>
@@ -81,16 +81,16 @@
         <div class="row">
             <h4>Pending artist</h4>
             <div class="row p-4">
-                <table class="table">
+                <table class="table table-color">
                     <thead>
-                    <tr>
+                    <tr class="custom-tr">
                         <th scope="col">ID</th>
-                        <th scope="col" class="col-md-2">Name and surname</th>
-                        <th scope="col">Gender</th>
-                        <th scope="col">Profession</th>
-                        <th scope="col" class="col-md-2">Birth date</th>
-                        <th scope="col" class="col-md-2" >Death date</th>
-                        <th scope="col" class="col-md-4" >Description</th>
+                        <th scope="col" class="col-md-2">Imie i nazwisko</th>
+                        <th scope="col">Płeć</th>
+                        <th scope="col">Zawód</th>
+                        <th scope="col" class="col-md-2">Data urodzenia</th>
+                        <th scope="col" class="col-md-2" >Data śmierci</th>
+                        <th scope="col" class="col-md-4" >Opis</th>
                         <td class="col-md-1" ></td>
                     </tr>
                     </thead>
@@ -108,15 +108,15 @@
                                 <div class="btn-group">
                                     <form method="POST" action="{{ route('verifyArtist', ['id' => $a->id, 'decision' =>'verified']) }}">
                                         @csrf
-                                        <button type="submit" class="btn btn-outline-success mx-1">Verify</button>
+                                        <button type="submit" class="btn mx-1"><h4><i class="bi bi-check-lg add-icon-admin"></i></h4></button>
                                     </form>
                                     <form>
                                         @csrf
-                                        <button class="btn btn-outline-warning mx-1">Check</button>
+                                        <button class="btn mx-1"><h5><i class="bi bi-pen edit-icon"></i></h5></button>
                                     </form>
                                     <form method="POST" action="{{ route('verifyArtist', ['id' => $a->id, 'decision' =>'rejected']) }}">
                                         @csrf
-                                        <button type="submit" class="btn btn-outline-success mx-1">Reject</button>
+                                        <button type="submit" class="btn mx-1"><h5><i class="bi bi-x-lg delete-icon"></i></h5></button>
                                     </form>
                                 </div>
                             </td>
@@ -128,17 +128,17 @@
         </div>
 
         <div class="row">
-            <h4>Your quizzes</h4>
+            <h4>Twoje quizy</h4>
             <div class="row p-4">
-                <table class="table">
+                <table class="table table-color">
                     <thead>
-                    <tr>
+                    <tr class="custom-tr">
                         <th scope="col">ID</th>
-                        <th scope="col" class="col-md-2">Tittle</th>
-                        <th scope="col" class="col-md-2">Description</th>
-                        <th scope="col" class="col-md-2">Start date</th>
-                        <th scope="col" class="col-md-2">End date</th>
-                        <th scope="col" class="col-md-3">Options</th>
+                        <th scope="col" class="col-md-2">Nazwa</th>
+                        <th scope="col" class="col-md-2">Opis</th>
+                        <th scope="col" class="col-md-2">Data rozpoczęcia</th>
+                        <th scope="col" class="col-md-2">Data zakończenia</th>
+                        <th scope="col" class="col-md-3">Opcje wyboru</th>
                         <td></td>
                     </tr>
                     </thead>
@@ -160,10 +160,10 @@
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    <a href="{{ route('editQuizForm',['id' => $q->id])}} " class="text-decoration-none"><button type="submit" class="btn btn-outline-warning mx-1">Edit</button></a>
-                                    <form method="POST" action="{{ route('verifyArtist', ['id' => $a->id, 'decision' =>'rejected']) }}">
+                                    <a href="{{ route('editQuizForm',['id' => $q->id])}} " class="text-decoration-none"><button type="submit" class="btn mx-1"><h5><i class="bi bi-pen edit-icon"></i></h5></button></a>
+                                    <form method="post" action="{{ route('deleteQuiz', ['id' => $q->id]) }}">
                                         @csrf
-                                        <button type="submit" class="btn btn-outline-danger mx-1">Delete</button>
+                                        <button type="submit" class="btn mx-1"><h5><i class="bi bi-x-lg delete-icon"></i></h5></button>
                                     </form>
                                 </div>
                             </td>
