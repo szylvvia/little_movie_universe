@@ -3,9 +3,19 @@
 @section('content')
     <div class="container">
         <div class="card-body">
+            @if (session('status'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('status') }}
+                </div>
+            @endif
             @if (session('success'))
                 <div class="alert alert-success" role="alert">
                     {{ session('success') }}
+                </div>
+            @endif
+            @if (session('error'))
+                <div class="alert alert-danger" role="alert">
+                    {{ session('error') }}
                 </div>
             @endif
             <h1>Add artist</h1>
@@ -41,8 +51,8 @@
                     <label for="gender" class="col-md-4 col-form-label text-md-end">{{ __('Płeć') }}</label>
                     <div class="col-md-6">
                         <select id="gender" class="form-control @error('gender') is-invalid @enderror" name="gender" value="{{ old('gender') }}" autocomplete="gender" autofocus required>
-                            <option value="Female">Female</option>
-                            <option value="Male">Male</option>
+                            <option value="Kobieta">Kobieta</option>
+                            <option value="Mężczyzna">Mężczyzna</option>
                         </select>
                         @error('gender')
                         <span class="invalid-feedback" role="alert">
@@ -91,11 +101,11 @@
                     <label for="profession" class="col-md-4 col-form-label text-md-end">{{ __('Zawód') }}</label>
                     <div class="col-md-6">
                         <select id="profession" class="form-control @error('profession') is-invalid @enderror" name="profession" value="{{ old('profession') }}" autocomplete="profession" autofocus required>
-                            <option value="Actor">Aktor</option>
-                            <option value="Director">Reżyser</option>
-                            <option value="Screenwriter">Scenarzysta</option>
-                            <option value="Musican">Kompozytor</option>
-                            <option value="Producer">Poducent</option>
+                            <option value="Aktor">Aktor</option>
+                            <option value="Reżyser">Reżyser</option>
+                            <option value="Scenarzysta">Scenarzysta</option>
+                            <option value="Kompozytor">Kompozytor</option>
+                            <option value="Producent">Poducent</option>
                         </select>
                         @error('profession')
                         <span class="invalid-feedback" role="alert">

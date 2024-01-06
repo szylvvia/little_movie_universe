@@ -31,8 +31,8 @@ class ArtistController extends Controller
             'birth_date' => ['required', 'date', 'before:today'],
             'death_date' => ['nullable', 'date', 'before:today'],
             'description' => ['nullable', 'string'],
-            'profession' => ['required', 'in:Actor,Director,Screenwriter,Musican,Producer'],
-            'gender' => ['required', 'in:Female,Male'],
+            'profession' => ['required', 'in:Aktor,Reżyser,Scenarzysta,Kompozytor,Producent'],
+            'gender' => ['required', 'in:Kobieta,Mężczyzna'],
             'image' => ['image', 'mimes:jpeg,png,jpg', 'mimetypes:image/jpeg,image/png,image/jpg', function ($attribute, $value, $fail) {
                 $allowedExtensions = ['jpeg', 'png', 'jpg'];
                 $extension = pathinfo($value->getClientOriginalName(), PATHINFO_EXTENSION);
@@ -52,7 +52,7 @@ class ArtistController extends Controller
 
     public function resizeImage($image)
     {
-        $resizedImage = Image::make($image)->resize(200, null, function ($constraint) {
+        $resizedImage = Image::make($image)->resize(200, 100, function ($constraint) {
             $constraint->aspectRatio();
         });
 
@@ -179,7 +179,7 @@ class ArtistController extends Controller
         }
         else
         {
-            return redirect()->route('showArtist')->with('error', 'Artist do not belong to you');
+            return redirect()->route('showArtists')->with('error', 'Artist do not belong to you');
         }
     }
 
@@ -187,7 +187,10 @@ class ArtistController extends Controller
     {
         $artist = Artist::find($id);
         $artist->birth_date = Carbon::parse($artist->birth_date)->format('d.m.Y');
-        $artist->death_date = Carbon::parse($artist->death_date)->format('d.m.Y');
+        if($artist->death_date!=null)
+        {
+            $artist->death_date = Carbon::parse($artist->death_date)->format('d.m.Y');
+        }
         return view("showArtist", compact("artist"));
     }
 

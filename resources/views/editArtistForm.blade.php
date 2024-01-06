@@ -3,17 +3,27 @@
 @section('content')
     <div class="container">
         <div class="card-body">
+            @if (session('status'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('status') }}
+                </div>
+            @endif
             @if (session('success'))
                 <div class="alert alert-success" role="alert">
                     {{ session('success') }}
                 </div>
             @endif
-            <h1>Edit {{$artist->name}} {{$artist->surname}}</h1>
+            @if (session('error'))
+                <div class="alert alert-danger" role="alert">
+                    {{ session('error') }}
+                </div>
+            @endif
+            <h1>Edytujesz artystę <strong>{{$artist->name}} {{$artist->surname}}</strong></h1>
             @auth
                 <form method="POST" action="{{ route('editArtist',['id' => $artist->id]) }}" enctype="multipart/form-data">
                     @csrf
                     <div class="row mb-3">
-                        <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
+                        <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Imie') }}</label>
                         <div class="col-md-6">
                             <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{$artist->name}}" required autocomplete="name" autofocus>
                             @error('name')
@@ -24,7 +34,7 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="surname" class="col-md-4 col-form-label text-md-end">{{ __('Surname') }}</label>
+                        <label for="surname" class="col-md-4 col-form-label text-md-end">{{ __('Nazwisko') }}</label>
 
                         <div class="col-md-6">
                             <input id="surname" type="text" class="form-control @error('surname') is-invalid @enderror" name="surname" value="{{ $artist->surname}}" required autocomplete="surname" autofocus>
@@ -37,11 +47,11 @@
                     </div>
 
                     <div class="row mb-3">
-                        <label for="gender" class="col-md-4 col-form-label text-md-end">{{ __('Gender') }}</label>
+                        <label for="gender" class="col-md-4 col-form-label text-md-end">{{ __('Płeć') }}</label>
                         <div class="col-md-6">
                             <select id="gender" class="form-control @error('gender') is-invalid @enderror" name="gender" autocomplete="gender" autofocus required>
-                                <option value="Female" @if($artist->gender == 'Female') selected @endif>Female</option>
-                                <option value="Male" @if($artist->gender == 'Male') selected @endif>Male</option>
+                                <option value="Kobieta" @if($artist->gender == 'Female') selected @endif>Kobieta</option>
+                                <option value="Mężczyzna" @if($artist->gender == 'Male') selected @endif>Mężczyzna</option>
                             </select>
                             @error('gender')
                             <span class="invalid-feedback" role="alert">
@@ -52,7 +62,7 @@
                     </div>
 
                     <div class="row mb-3">
-                        <label for="birth_date" class="col-md-4 col-form-label text-md-end">{{ __('BirthDate') }}</label>
+                        <label for="birth_date" class="col-md-4 col-form-label text-md-end">{{ __('Data urodzenia') }}</label>
 
                         <div class="col-md-6">
                             <input id="birth_date" type="date" min="18-01-01" max="2099-12-31" class="form-control @error('birth_date') is-invalid @enderror" name="birth_date" value="{{ $artist->birth_date }}" required autocomplete="birth_date" autofocus>
@@ -64,7 +74,7 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="death_date" class="col-md-4 col-form-label text-md-end">{{ __('DeathDate') }}</label>
+                        <label for="death_date" class="col-md-4 col-form-label text-md-end">{{ __('Data śmierci') }}</label>
 
                         <div class="col-md-6">
                             <input id="death_date" min="18-01-01" max="2099-12-31" type="date" class="form-control @error('death_date') is-invalid @enderror" name="death_date" value="{{ $artist->death_date }}" autocomplete="death_date" autofocus>
@@ -76,7 +86,7 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="description" class="col-md-4 col-form-label text-md-end">{{ __('Decription') }}</label>
+                        <label for="description" class="col-md-4 col-form-label text-md-end">{{ __('Opis artysty') }}</label>
                         <div class="col-md-6">
                             <input id="description" type="text" class="form-control @error('description') is-invalid @enderror" name="description" value="{{ $artist->description }}" autocomplete="description" autofocus>
                             @error('description')
@@ -87,14 +97,14 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="profession" class="col-md-4 col-form-label text-md-end">{{ __('Profession') }}</label>
+                        <label for="profession" class="col-md-4 col-form-label text-md-end">{{ __('Zawód') }}</label>
                         <div class="col-md-6">
                             <select id="profession" class="form-control @error('profession') is-invalid @enderror" name="profession" value="{{ old('profession') }}" autocomplete="profession" autofocus required>
-                                <option value="Actor" @if($artist->profession == 'Actor') selected @endif >Actor</option>
-                                <option value="Director" @if($artist->profession == 'Director') selected @endif >Director</option>
-                                <option value="Screenwriter" @if($artist->profession == 'Screenwriter') selected @endif >Screenwriter</option>
-                                <option value="Musican" @if($artist->profession == 'Musican') selected @endif >Musician</option>
-                                <option value="Producer"  @if($artist->profession == 'Producer') selected @endif >Producer</option>
+                                <option value="Aktor" @if($artist->profession == 'Aktor') selected @endif >Aktor</option>
+                                <option value="Reżyser" @if($artist->profession == 'Reżyser') selected @endif >Reżyser</option>
+                                <option value="Scenarzysta" @if($artist->profession == 'Scenarzysta') selected @endif >Scenarzysta</option>
+                                <option value="Kompozytor" @if($artist->profession == 'Kompozytor') selected @endif >Kompozytor</option>
+                                <option value="Producent"  @if($artist->profession == 'Producent') selected @endif >Producent</option>
                             </select>
                             @error('profession')
                             <span class="invalid-feedback" role="alert">
@@ -104,7 +114,7 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="image" class="col-md-4 col-form-label text-md-end">{{ __('Image') }}</label>
+                        <label for="image" class="col-md-4 col-form-label text-md-end">{{ __('Zdjęcie') }}</label>
                         <div class="col-md-6">
                             <input id="image" type="file" class="form-control @error('image') is-invalid @enderror" name="image" autocomplete="image" autofocus>
                             <div id="jsImageErrorMessages" class="customError" role="alert"></div>
@@ -117,7 +127,7 @@
                     </div>
                     <div class="row mb-3">
                         @if($artist->image!=null)
-                            <label for="image" class="col-md-4 col-form-label text-md-end">{{ __('Current image') }}</label>
+                            <label for="image" class="col-md-4 col-form-label text-md-end">{{ __('Obecne zdjęcie') }}</label>
                             <div class="col-md-6">
                                 <img src="data:image/jpeg;base64,{{ base64_encode($artist->image) }}" height="50" alt="Opis obrazu">
                             </div>
@@ -125,8 +135,8 @@
                     </div>
                     <div class="row mb-0">
                         <div class="col-md-6 offset-md-4">
-                            <button type="submit" class="btn btn-primary">
-                                {{ __('Save') }}
+                            <button type="submit" class="btn add-button">
+                                <i class="bi bi-check-lg"></i>{{ __(' Zapisz artystę') }}
                             </button>
                         </div>
                     </div>

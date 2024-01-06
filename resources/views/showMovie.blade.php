@@ -3,7 +3,11 @@
 @section('content')
     <div class="container">
         <div class="card-body">
-
+            @if (session('status'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('status') }}
+                </div>
+            @endif
             @if (session('success'))
                 <div class="alert alert-success" role="alert">
                     {{ session('success') }}
@@ -14,7 +18,6 @@
                     {{ session('error') }}
                 </div>
             @endif
-
                 <div class="row">
                     <div class="col-md-3">
                         <img class="quiz-image" src="data:image/jpeg;base64,{{ base64_encode($movie->poster) }}" alt="Opis obrazu">
@@ -40,15 +43,15 @@
                                                             aria-label="Anuluj"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    Are you sure you want to delete the movie <strong>{{$movie->title}}</strong>?
+                                                    Czy na pewno chcesz usunąć film <strong>{{$movie->title}}</strong>?
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel
+                                                    <button type="button" class="btn add-button" data-bs-dismiss="modal">Anuluj
                                                     </button>
                                                     <form method="POST" action="{{ route('deleteMovie', ['id' => $movie->id]) }}">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger">Delete movie</button>
+                                                        <button type="submit" class="btn btn-danger">Usuń</button>
                                                     </form>
                                                 </div>
                                             </div>

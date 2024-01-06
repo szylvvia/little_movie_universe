@@ -428,7 +428,7 @@ nav
 .table-color td {
     background-color: #94A5BE !important;
     border-color: #94A5BE !important;
-    /*color: #E8E6D5 !important;*/
+    color: #E8E6D5 !important;
 }
 .custom-tr th, .custom-tr td {
     background-color:  #5A7194 !important;
@@ -463,3 +463,35 @@ nav
 {
     color: #329c40;
 }
+.custom-card
+{
+    border: 0 !important;
+    color: #E8E6D5 !important;
+    border-radius: 10px !important;
+}
+.custom-card-header
+{
+    background-color: #5A7194 !important;
+    border-color: #94A5BE !important;
+}
+
+.custom-card-body
+{
+    border: 0;
+    background-color: #5A7194 !important;
+    border-radius: 0 0 5px 5px !important;
+}
+ .result-custom
+ {
+     width: 71.9% !important;
+ }
+
+ .two-col
+ {
+     margin-left: -10px;
+ }
+
+ .custom-buttons
+ {
+     margin-top: -30px;
+ }

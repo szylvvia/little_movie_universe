@@ -4,17 +4,27 @@
     <div class="container">
         @if(auth()->user()->id)
             @if(auth()->user()->id==$movie->user_id or auth()->user()->role=='admin')
-                <h1>Edit movie <strong>{{$movie->title}}</strong></h1>
+                <h1>Edytujesz film <strong>{{$movie->title}}</strong></h1>
                 <div class="card-body">
+                    @if (session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif
                     @if (session('success'))
                         <div class="alert alert-success" role="alert">
                             {{ session('success') }}
                         </div>
                     @endif
+                    @if (session('error'))
+                        <div class="alert alert-danger" role="alert">
+                            {{ session('error') }}
+                        </div>
+                    @endif
                     <form method="POST" action="{{ route('editMovie',['id' => $movie->id]) }}" enctype="multipart/form-data">
                         @csrf
                         <div class="row mb-3">
-                            <label for="title" class="col-md-4 col-form-label text-md-end">{{ __('Tittle') }}</label>
+                            <label for="title" class="col-md-4 col-form-label text-md-end">{{ __('Tytuł') }}</label>
                             <div class="col-md-6">
                                 <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{$movie->title}}" required autocomplete="title" autofocus>
                                 @error('title')
@@ -25,7 +35,7 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="releaseDate" class="col-md-4 col-form-label text-md-end">{{ __('Release date') }}</label>
+                            <label for="releaseDate" class="col-md-4 col-form-label text-md-end">{{ __('Data premiery') }}</label>
                             <div class="col-md-6">
                                 <input id="releaseDate" min="1888-10-14" max="2099-12-31" type="date" class="form-control @error('releaseDate') is-invalid @enderror" name="releaseDate" value="{{ $movie->release_date }}" required autocomplete="releaseDate" autofocus>
                                 @error('releaseDate')
@@ -36,7 +46,7 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="description" class="col-md-4 col-form-label text-md-end">{{ __('Description') }}</label>
+                            <label for="description" class="col-md-4 col-form-label text-md-end">{{ __('Opis filmu') }}</label>
                             <div class="col-md-6">
                                 <textarea id="description" class="form-control @error('description') is-invalid @enderror" name="description"  autocomplete="description" autofocus>{{$movie->description}}</textarea>
                                 @error('description')
@@ -48,7 +58,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="trailerLink" class="col-md-4 col-form-label text-md-end">{{ __('Trailer Link') }}</label>
+                            <label for="trailerLink" class="col-md-4 col-form-label text-md-end">{{ __('Link do trailera') }}</label>
                             <div class="col-md-6">
                                 <input id="trailerLink" type="text" class="form-control @error('trailerLink') is-invalid @enderror" name="trailerLink" value="{{$movie->trailer_link}}" required autocomplete="trailerLink" autofocus>
                                 @error('trailerLink')
@@ -60,7 +70,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="soundtrackLink" class="col-md-4 col-form-label text-md-end">{{ __('Soundtrack Link') }}</label>
+                            <label for="soundtrackLink" class="col-md-4 col-form-label text-md-end">{{ __('Link do soundtracku') }}</label>
                             <div class="col-md-6">
                                 <input id="soundtrackLink" type="text" class="form-control @error('soundtrackLink') is-invalid @enderror" name="soundtrackLink" value="{{$movie->soundtrack_link}}" required autocomplete="soundtrackLink" autofocus>
                                 @error('soundtrackLink')
@@ -71,7 +81,7 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="mySelectInput" class="col-md-4 col-form-label text-md-end">{{ __('Artists') }}</label>
+                            <label for="mySelectInput" class="col-md-4 col-form-label text-md-end">{{ __('Artyści') }}</label>
                             <div class="col-md-6">
                                 <select multiple id="mySelectInput" class="form-control @error('soundtrack_link') is-invalid @enderror" name="artists[]" required autocomplete="artists" autofocus>
                                     @foreach($artist as $a)
@@ -88,7 +98,7 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="poster" class="col-md-4 col-form-label text-md-end">{{ __('Poster') }}</label>
+                            <label for="poster" class="col-md-4 col-form-label text-md-end">{{ __('Plakat') }}</label>
                             <div class="col-md-6">
                                 <input id="poster" type="file" class="form-control @error('poster') is-invalid @enderror" name="poster" value="{{ old('poster') }}" autocomplete="poster" autofocus>
                                 <div id="jsPosterErrorMessages" class="customError" role="alert"></div>
@@ -101,14 +111,14 @@
                         </div>
                         <div class="row mb-3">
                             @if($movie->poster!=null)
-                                <label for="posterToDelete" class="col-md-4 col-form-label text-md-end">{{ __('Current poster') }}</label>
+                                <label for="posterToDelete" class="col-md-4 col-form-label text-md-end">{{ __('Obecny plakat') }}</label>
                                 <div class="col-md-6">
                                     <img src="data:image/jpeg;base64,{{ base64_encode($movie->poster) }}" height="50" alt="Opis obrazu">
                                 </div>
                             @endif
                         </div>
                         <div class="row mb-3">
-                            <label for="images" class="col-md-4 col-form-label text-md-end">{{ __('Images') }}</label>
+                            <label for="images" class="col-md-4 col-form-label text-md-end">{{ __('Fotosy z filmu') }}</label>
                             <div class="col-md-6">
                                 <input multiple id="images" type="file" class="form-control @error('images') is-invalid @enderror" name="images[]" autocomplete="images" autofocus>
                                 <div id="jsImagesErrorMessages" class="customError" role="alert"></div>
@@ -126,7 +136,7 @@
                         </div>
                         <div class="row mb-3">
                             @if($movie->image()!=null)
-                                <label for="imagesToDelete" class="col-md-4 col-form-label text-md-end">{{ __('Images to delete') }}</label>
+                                <label for="imagesToDelete" class="col-md-4 col-form-label text-md-end">{{ __('Fotosy do usunięcia') }}</label>
                                 <div class="col-md-6">
                                     @foreach($movie->image as $i)
                                         <input id="imagesToDelete" type="checkbox" value="{{$i->id}}" name="imagesToDelete[]"><img src="data:image/jpeg;base64,{{ base64_encode($i->image) }}" height="50" alt="Opis obrazu">
@@ -136,8 +146,8 @@
                         </div>
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Edit movie') }}
+                                <button type="submit" class="btn add-button">
+                                    <i class="bi bi-check-lg"></i>{{ __(' Zapisz film') }}
                                 </button>
                             </div>
                         </div>

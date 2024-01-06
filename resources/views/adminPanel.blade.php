@@ -5,6 +5,11 @@
         <div class="row">
             <h3>Admin panel</h3>
             <div class="card-body">
+                @if (session('status'))
+                    <div class="alert alert-success" role="alert">
+                        {{ session('status') }}
+                    </div>
+                @endif
                 @if (session('success'))
                     <div class="alert alert-success" role="alert">
                         {{ session('success') }}
@@ -79,7 +84,7 @@
         </div>
 
         <div class="row">
-            <h4>Pending artist</h4>
+            <h4>Oczekujący artyści</h4>
             <div class="row p-4">
                 <table class="table table-color">
                     <thead>

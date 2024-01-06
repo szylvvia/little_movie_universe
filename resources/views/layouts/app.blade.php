@@ -60,10 +60,10 @@
                     <form class="position-relative w-75" id="searchForm" method="get">
                         @csrf
                         <div class="d-flex g-0 mb-0 ms-4">
-                            <input required class="form-control mx-2 w-75" type="search" placeholder="Wyszukaj" aria-label="Wyszukaj" id="searchInput" name="string" autocomplete="off">
+                            <input required class="form-control mx-0 w-75" type="search" placeholder="Wyszukaj" aria-label="Wyszukaj" id="searchInput" name="string" autocomplete="off">
                             <button type="submit" class="btn mt-2" id="searchButton"><h5><i class="bi bi-search searchIcon"></i></h5></button>
                         </div>
-                        <ul id="searchResultsList" class="list-group mx-2 w-75">
+                        <ul id="searchResultsList" class="list-group mx-4 result-custom">
                         </ul>
                     </form>
 

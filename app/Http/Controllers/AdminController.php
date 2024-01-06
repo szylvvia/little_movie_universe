@@ -22,7 +22,7 @@ class AdminController extends Controller
                 return view('adminPanel', compact('pendingMovies', 'pendingArtist','quizzes'));
             }
         }
-        return redirect()->route('home')->with('error', 'You are not admin');
+        return redirect()->route('home')->with('error', 'Dostęp tylko dla administatora');
     }
 
     protected function validatorVerify(array $data)
@@ -46,13 +46,21 @@ class AdminController extends Controller
                     }
                     $movieToAccept->update(['status' => $request->decision]);
 
-                    return redirect()->route('showAdminPanel')->with('success', 'Movie successfully ' . $request->decision);
+                    if($request->decision=='verified')
+                    {
+                        return redirect()->route('showAdminPanel')->with('success', 'Film został pomyślnie zaakceptowany.');
+                    }
+                    else
+                    {
+                        return redirect()->route('showAdminPanel')->with('success', 'Film został odrzucony.');
+                    }
+
                 }
-                return redirect()->route('showAdminPanel')->with('error', 'Something gone wrong. Try again');
+                return redirect()->route('showAdminPanel')->with('error', 'Coś poszło nie tak. Spróbuj ponownie póżniej.');
             }
-            return redirect()->route('showAdminPanel')->with('error', 'You are not admin');
+            return redirect()->route('showAdminPanel')->with('error', 'Dostęp tylko dla administratora');
         }
-        return redirect()->route('showAdminPanel')->with('error', 'You are not login');
+        return redirect()->route('showAdminPanel')->with('error', 'Dostęp tylko dla zalogowanych');
     }
 
     public function verifyArtist(Request $request)
@@ -73,10 +81,17 @@ class AdminController extends Controller
 
                     $artistToAccept->update(['status'=>$request->decision]);
 
-                    return redirect()->route('showAdminPanel')->with('success', 'Artist was successfully '.$request->decision);
-                }return redirect()->route('showAdminPanel')->with('error', 'Something gone wrong. Try again');
-            }return redirect()->route('showAdminPanel')->with('error', 'You are not admin');
-        }return redirect()->route('showAdminPanel')->with('error', 'You are not login');
+                    if($request->decision=='verified')
+                    {
+                        return redirect()->route('showAdminPanel')->with('success', 'Artysta został pomyślnie zaakceptowany.');
+                    }
+                    else
+                    {
+                        return redirect()->route('showAdminPanel')->with('success', 'Artysta został odrzucony.');
+                    }
+                }return redirect()->route('showAdminPanel')->with('error', 'Coś poszło nie tak. Spóbuj ponownie później!');
+            }return redirect()->route('showAdminPanel')->with('error', 'Dostęp tylko dla administratora.');
+        }return redirect()->route('showAdminPanel')->with('error', 'Nie jesteś zalogowany!');
     }
 }
 

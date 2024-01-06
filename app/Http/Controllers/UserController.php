@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Artist;
 use App\Models\Collection;
+use App\Models\Movie;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -29,9 +31,17 @@ class UserController extends Controller
             $user = User::find($id);
             $fav = Collection::where(['user_id'=>$id, 'name' => 'favorite'])->get();
             $wat = Collection::where(['user_id'=>$id, 'name' => 'toWatch'])->get();
-            return view("showUser", compact("user","fav","wat"));
+            $pendingMovies = Movie::where(['user_id'=>$id, 'status'=>'pending'])->get();
+            $pendingArtists = Artist::where(['user_id'=>$id, 'status'=>'pending'])->get();
+            $rejectedMovies = Movie::where(['user_id'=>$id, 'status'=>'rejected'])->get();
+            $rejectedArtists = Artist::where(['user_id'=>$id, 'status'=>'rejected'])->get();
+
+            $pending = $pendingMovies->merge($pendingArtists);
+            $rejected = $rejectedMovies->merge($rejectedArtists);
+
+            return view("showUser", compact("user","fav","wat","pending","rejected"));
         }
-        return redirect()->route('home')->with('error', 'User is not existing');
+        return redirect()->route('home')->with('error', 'Użytkownik nie istnieje');
     }
 
     public function deleteUser()

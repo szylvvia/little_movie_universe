@@ -3,6 +3,11 @@
 @section('content')
     <div class="container">
         <div class="card-body">
+            @if (session('status'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('status') }}
+                </div>
+            @endif
             @if (session('success'))
                 <div class="alert alert-success" role="alert">
                     {{ session('success') }}
@@ -85,7 +90,7 @@
                     </div>
                     <div class="col-md-1 offset-md-3 text-right custom-place">
                         <p class="moviePlaceNumber ms-5">{{ ++$counter }}</p>
-                        <p class="moviePlaceText ms-3">place</p>
+                        <p class="moviePlaceText ms-3">miejsce</p>
                     </div>
                 </div>
             @endforeach
