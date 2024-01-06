@@ -50,11 +50,11 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:50','regex:/^[A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$/u'],
-            'surname' => ['required', 'string', 'max:50','regex:/^[A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$/u'],
+            'name' => ['required', 'string', 'max:50','regex:/^[A-ZĄĆĘŁŃÓŚŹŻ][A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ]+(\s[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ]+)?$/u'],
+            'surname' => ['required', 'string', 'max:50','regex:/^[A-ZĄĆĘŁŃÓŚŹŻ][A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ]+(-[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ]+)?$/u'],
             'birth_date' => ['required','date','before:today'],
             'email' => ['required', 'string', 'email', 'max:50', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:9', 'confirmed'],
         ]);
     }
 

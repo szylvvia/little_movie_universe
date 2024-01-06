@@ -32,11 +32,11 @@ class QuizController extends Controller
             $extension = pathinfo($value->getClientOriginalName(), PATHINFO_EXTENSION);
 
             if ($extension === 'bin' || !in_array($extension, $allowedExtensions)) {
-                $fail("The $attribute must be a file of type: " . implode(', ', $allowedExtensions));
+                $fail("Obraz musi być typu: " . implode(', ', $allowedExtensions));
             }
 
             if ($value->getSize() > 5242880) {
-                $fail("The $attribute must not be larger than 5 MB.");
+                $fail("Obraz nie może być większy niż 5 MB.");
             }
         }];
     }
@@ -63,8 +63,8 @@ class QuizController extends Controller
         })->get();
 
         if (sizeof($quizzes) > 0) {
-            $validator->errors()->add('start_date', 'Data is already taken');
-            $validator->errors()->add('end_date', 'Data is already taken');
+            $validator->errors()->add('start_date', 'Data rozpoczęcia jest już zajęta! ');
+            $validator->errors()->add('end_date', 'Data zakończenia jest już zajęta!');
         }
     }
 
@@ -120,10 +120,10 @@ class QuizController extends Controller
             }
             else
             {
-                return redirect()->route("home")->with('error','You are not admin, create quiz is not allowed');
+                return redirect()->route("home")->with('error','Dostęo tylko dla administartora!');
             }
         }
-        return redirect()->route("showAdminPanel")->with('success','Quiz was create succesfuly');
+        return redirect()->route("showAdminPanel")->with('success','Quiz został dodany pomyślnie.');
     }
 
     public function addAnswer(Request $request)
@@ -148,16 +148,16 @@ class QuizController extends Controller
                         ]
                     );
                     if ($answer) {
-                        return redirect()->route("home")->with('success', 'Vote was successfully added');
+                        return redirect()->route("home")->with('success', 'Głos został dodany pomyślnie.');
                     }
                 }
             }
         }
         else
         {
-            return redirect()->route("home")->with('error', 'You already add vote to this quiz');
+            return redirect()->route("home")->with('error', 'Głos do tego quizu został już oddany!');
         }
-        return redirect()->route("home")->with('error','Something gone wrong. Try again');
+        return redirect()->route("home")->with('error','Coś poszło nie tak. Spróbuj ponownie!');
     }
 
     public function deleteAnswer(Request $request)
@@ -170,11 +170,11 @@ class QuizController extends Controller
         if($toDelete)
         {
             $toDelete->delete();
-            return redirect()->route('home')->with('success', 'Your vote was delete');
+            return redirect()->route('home')->with('success', 'Głos został usunięty pomyślnie.');
         }
         else
         {
-            return redirect()->route('home')->with('error', "Vote doesn't exist!");
+            return redirect()->route('home')->with('error', "Głos na tą odpowiedz nie istnieje!");
 
         }
 
@@ -187,11 +187,11 @@ class QuizController extends Controller
         if($toDelete)
         {
             $toDelete->delete();
-            return redirect()->route('showAdminPanel')->with('success', 'Your quiz was delete');
+            return redirect()->route('showAdminPanel')->with('success', 'Quiz został usunięty pomyślnie.');
         }
         else
         {
-            return redirect()->route('showAdminPanel')->with('error', "Movie with this ID doesn't exist!");
+            return redirect()->route('showAdminPanel')->with('error', "Quiz o wybranym ID nie istnieje!");
 
         }
     }
@@ -209,12 +209,12 @@ class QuizController extends Controller
             }
             else
             {
-                return redirect()->route('showAdminPanel')->with('error', "Quiz is not yours");
+                return redirect()->route('showAdminPanel')->with('error', "Wybrany quiz nie należy do Ciebie!");
             }
         }
         else
         {
-            return redirect()->route('showAdminPanel')->with('error', "Quiz with this ID does not exist");
+            return redirect()->route('showAdminPanel')->with('error', "Quiz o wybranym ID nie istenieje!");
         }
     }
 
@@ -243,8 +243,8 @@ class QuizController extends Controller
             {
                 if($q->id != $id)
                 {
-                    $validator->errors()->add('start_date', 'Data is already taken');
-                    $validator->errors()->add('end_date', 'Data is already taken');
+                    $validator->errors()->add('start_date', 'Data rozpoczęcia jest już zajęta!');
+                    $validator->errors()->add('end_date', 'Data zakończenia jest już zajęta!');
                 }
             }
 
@@ -303,8 +303,13 @@ class QuizController extends Controller
                     'image' => $image,
                 ]);
             }
+            return redirect()->route('showAdminPanel')->with('success', 'Quiz został zaktualizowany pomyślnie!');
+        }
+        else
+        {
+            return redirect()->route('showAdminPanel')->with('success', 'Quiz nie należy do Ciebie!');
+
         }
 
-        return redirect()->route('showAdminPanel')->with('success', 'Your quiz updated successfully');
     }
 }

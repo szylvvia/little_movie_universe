@@ -16,7 +16,7 @@ class RateController extends Controller
             'review' => ['nullable','string', 'max:255',function ($attribute, $value, $fail) {
                 $cleanedReview = strip_tags($value);
                 if ($value !== $cleanedReview) {
-                    $fail('Your review is not correct');
+                    $fail('Recenzja jest niepoprawna!');
                 }
             }]
 
@@ -46,9 +46,9 @@ class RateController extends Controller
                 'review' => trim($request->review)
             ]);
             if ($rate) {
-                return redirect()->route('showMovie',['id'=>$id])->with('success', 'Your rate was successfully added');
+                return redirect()->route('showMovie',['id'=>$id])->with('success', 'Ocena została zaktualizowana pomyślnie.');
             } else {
-                return redirect()->route('showMovie',['id'=>$id])->with('error', 'Failed to add your rate');
+                return redirect()->route('showMovie',['id'=>$id])->with('error', 'Coś poszło nie tak. Spróbuj ponownie.');
             }
         }
         else
@@ -58,9 +58,9 @@ class RateController extends Controller
                 'review' => trim($request->review)
             ]);
             if ($rate) {
-                return redirect()->route('showMovie',['id'=>$id])->with('success', 'Your rate was successfully updated');
+                return redirect()->route('showMovie',['id'=>$id])->with('success', 'Ocena została zaktualizowana pomyslnie.');
             } else {
-                return redirect()->route('showMovie',['id'=>$id])->with('error', 'Failed to update rate');
+                return redirect()->route('showMovie',['id'=>$id])->with('error', 'Coś poszło nie tak. Spróbuj ponownie.');
             }
         }
     }
@@ -73,16 +73,16 @@ class RateController extends Controller
             $resoult = $existingRate->delete();
             if($resoult)
             {
-                return redirect()->route('showMovie',['id'=>$id])->with('success', 'Your rate was successfully deleted');
+                return redirect()->route('showMovie',['id'=>$id])->with('success', 'Ocena została zaktualizowana pomyślnie.');
             }
             else
             {
-                return redirect()->route('showMovie',['id'=>$id])->with('error', 'Error: Can not delete your rate');
+                return redirect()->route('showMovie',['id'=>$id])->with('error', 'Coś poszło nie tak. Spróbuj ponownie.');
             }
         }
         else
         {
-            return redirect()->route('showMovie',['id'=>$id])->with('error', 'There is no your rate for this film');
+            return redirect()->route('showMovie',['id'=>$id])->with('error', 'Ocena do tego filmu nie istenieje.');
 
         }
     }

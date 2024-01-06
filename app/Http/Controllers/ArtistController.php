@@ -26,8 +26,8 @@ class ArtistController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:50'],
-            'surname' => ['required', 'string', 'max:50'],
+            'name' => ['required', 'string', 'max:50','regex:/^[A-ZĄĆĘŁŃÓŚŹŻ][A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ]+(\s[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ]+)?$/u'],
+            'surname' => ['required', 'string', 'max:50','regex:/^[A-ZĄĆĘŁŃÓŚŹŻ][A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ]+(-[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ]+)?$/u'],
             'birth_date' => ['required', 'date', 'before:today'],
             'death_date' => ['nullable', 'date', 'before:today'],
             'description' => ['nullable', 'string'],
@@ -38,7 +38,7 @@ class ArtistController extends Controller
                 $extension = pathinfo($value->getClientOriginalName(), PATHINFO_EXTENSION);
 
                 if ($extension === 'bin' || !in_array($extension, $allowedExtensions)) {
-                    $fail("The $attribute must be a file of type: " . implode(', ', $allowedExtensions));
+                    $fail("Plik musi być typu: " . implode(', ', $allowedExtensions));
                 }
             }],
         ]);
@@ -92,9 +92,9 @@ class ArtistController extends Controller
         ]);
         if(auth()->user()->role=='admin')
         {
-            return redirect()->route('showAdminPanel')->with('success', 'Artist was successfully updated');
+            return redirect()->route('showAdminPanel')->with('success', 'Artysta został dodany pomyślnie.');
         }
-        return redirect('/artists')->with('success', 'Artist was added successfully');
+        return redirect('/artists')->with('success', 'Artysta został dodany pomyślnie');
     }
 
     public function deleteArtist($id)
@@ -107,17 +107,17 @@ class ArtistController extends Controller
             if($toDelete)
             {
                 $toDelete->delete();
-                return redirect()->route('showArtists')->with('success', 'Your artist was delete');
+                return redirect()->route('showArtists')->with('success', 'Twój artysta został usunięty.');
             }
             else
             {
-                return redirect()->route('showArtist')->with('error', "Artist with this ID doesn't exist!");
+                return redirect()->route('showArtist')->with('error', "Artysta o podanym ID nie istnieje!");
 
             }
         }
         else
         {
-            return redirect()->route('showArtist')->with('error', "This artist do not belong to you!");
+            return redirect()->route('showArtist')->with('error', "Ten artysta nie należy do Ciebie!");
         }
 
     }
@@ -131,7 +131,7 @@ class ArtistController extends Controller
         }
         else
         {
-            return redirect()->route('showArtist', ['id' => $artist->id])->with('error', "This artist does not belong to you!");
+            return redirect()->route('showArtist', ['id' => $artist->id])->with('error', "Ten artysta nie należy do Ciebie!");
         }
 
     }
@@ -173,13 +173,13 @@ class ArtistController extends Controller
 
             if(auth()->user()->role=='admin')
             {
-                return redirect()->route('showAdminPanel')->with('success', 'Artist was successfully updated');
+                return redirect()->route('showAdminPanel')->with('success', 'Artysta został zaktualizowany pomyślnie.');
             }
-            return redirect()->route('showArtist',['id'=>$id])->with('success', 'Your artist was successfully updated');
+            return redirect()->route('showArtist',['id'=>$id])->with('success', 'Artysta został zaktualizowany pomyślnie.');
         }
         else
         {
-            return redirect()->route('showArtists')->with('error', 'Artist do not belong to you');
+            return redirect()->route('showArtists')->with('error', 'Ten artysta nie należy do Ciebie!');
         }
     }
 

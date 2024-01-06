@@ -47,15 +47,14 @@ class UserController extends Controller
     public function deleteUser()
     {
         $this->middleware('auth');
-
         $id = $this->getUserId();
         $toDelete = User::find($id);
         if($toDelete)
         {
             $toDelete->delete();
-            return redirect()->route('home')->with('success', 'Your account was delete');
+            return redirect()->route('home')->with('success', 'Twoje konto zostało usunięte pomyślnie.');
         }
-        return redirect()->route('home')->with('error', 'User is not existing');
+        return redirect()->route('home')->with('error', 'Użytkownik o wybranym ID nie istenieje.');
     }
 
     public function editUserForm()
@@ -73,19 +72,19 @@ class UserController extends Controller
             $extension = pathinfo($value->getClientOriginalName(), PATHINFO_EXTENSION);
 
             if ($extension === 'bin' || !in_array($extension, $allowedExtensions)) {
-                $fail("The $attribute must be a file of type: " . implode(', ', $allowedExtensions));
+                $fail("Obraz musi być typu: " . implode(', ', $allowedExtensions));
             }
 
             if ($value->getSize() > 5242880) {
-                $fail("The $attribute must not be larger than 5 MB.");
+                $fail("Obraz nie może być większy niż 5 MB.");
             }
         }];
     }
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:50','regex:/^[A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$/u'],
-            'surname' => ['required', 'string', 'max:50','regex:/^[A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$/u'],
+            'name' => ['required', 'string', 'max:50','regex:/^[A-ZĄĆĘŁŃÓŚŹŻ][A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ]+(\s[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ]+)?$/u'],
+            'surname' => ['required', 'string', 'max:50','regex:/^[A-ZĄĆĘŁŃÓŚŹŻ][A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ]+(-[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ]+)?$/u'],
             'birth_date' => ['required','date','before:today'],
             'description' => ['max:255'],
             'image' => ['mimes:jpeg,png,jpg', 'max:5242880',$this->checkImage()],
@@ -138,9 +137,9 @@ class UserController extends Controller
 
         if($add)
         {
-            return redirect()->route('showUser')->with('success', 'Your account was updated!');
+            return redirect()->route('showUser')->with('success', 'Twój profil został pomyslnie zaktualizowany.');
         }
-        else  return redirect()->route('showUser')->with('error', 'Something was wrong. Try again!');
+        else  return redirect()->route('showUser')->with('error', 'Coś poszło nie tak. Spróbuj ponownie później.');
     }
 
 }

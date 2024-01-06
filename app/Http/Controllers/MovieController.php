@@ -92,11 +92,11 @@ class MovieController extends Controller
             $extension = pathinfo($value->getClientOriginalName(), PATHINFO_EXTENSION);
 
             if ($extension === 'bin' || !in_array($extension, $allowedExtensions)) {
-                $fail("The $attribute must be a file of type: " . implode(', ', $allowedExtensions));
+                $fail("Obraz musi być typu: " . implode(', ', $allowedExtensions));
             }
 
             if ($value->getSize() > 5242880) {
-                $fail("The $attribute must not be larger than 5 MB.");
+                $fail("Obraz nie może być większy niż 5 MB.");
             }
         }];
     }
@@ -130,6 +130,16 @@ class MovieController extends Controller
     {
         $duplicate = Movie::where(['title'=> $movie->title])->where(['release_date' => $movie->releaseDate])->get();
         if(sizeof($duplicate)>0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public function isDuplicateForEdit($movie)
+    {
+        $duplicate = Movie::where(['title'=> $movie->title])->where(['release_date' => $movie->releaseDate])->get();
+        if(sizeof($duplicate)>1)
         {
             return true;
         }
@@ -175,11 +185,11 @@ class MovieController extends Controller
             }
 
             $movie->artist()->sync($request->artists);
-            return redirect('/movies')->with('success', 'Film was added successfully');
+            return redirect('/movies')->with('success', 'Film został dodany pomyślnie.');
         }
         else
         {
-            return redirect('/movies')->with('error', 'Film already exist in database');
+            return redirect('/movies')->with('error', 'Film już istnieje w bazie danych!');
         }
 
     }
@@ -203,11 +213,11 @@ class MovieController extends Controller
         if($toDelete)
         {
             $toDelete->delete();
-            return redirect()->route('showMovies')->with('success', 'Your movie was delete');
+            return redirect()->route('showMovies')->with('success', 'Film został usunięty pomyślnie.');
         }
         else
         {
-            return redirect()->route('showMovies')->with('error', "Movie with this ID doesn't exist!");
+            return redirect()->route('showMovies')->with('error', "Film o podanym ID nie istenieje!");
 
         }
     }
@@ -231,7 +241,7 @@ class MovieController extends Controller
             'images.*' => ['image', 'mimes:jpeg,png,jpg', 'mimetypes:image/jpeg,image/png,image/jpg','max: 16777215',$this->checkImage()],
             'imagesToDelete' => ['array', function ($attribute, $value, $fail) use ($data) {
                 if (count($value) === count($data['images']) && empty($data['images'])) {
-                    $fail("Movie must have minimum one image");
+                    $fail("Film musi zawierać przynajmniej jeden fotos!");
                 }
             }]
         ]));
@@ -281,9 +291,9 @@ class MovieController extends Controller
         }
         if(auth()->user()->role=='admin')
         {
-            return redirect()->route('showAdminPanel')->with('success', 'Movie was successfully updated');
+            return redirect()->route('showAdminPanel')->with('success', 'Film został zaktualizowany pomyślnie.');
         }
-        return redirect()->route('showMovie',['id'=>$id])->with('success', 'Your movie was successfully updated');
+        return redirect()->route('showMovie',['id'=>$id])->with('success', 'Film został zaktualizowany pomyślnie.');
     }
 
     public function avgMovie($id)
@@ -313,7 +323,7 @@ class MovieController extends Controller
                 ])->first();
 
                 if ($existingRecord) {
-                    return redirect()->route('showMovies')->with('error', 'This collection entry already exists');
+                    return redirect()->route('showMovies')->with('error', "Film już istnieje w kolecji");
                 }
 
                 $validator = $this->validatorCollection($request->all());
@@ -330,13 +340,13 @@ class MovieController extends Controller
                 ]);
 
                 if (!$collection) {
-                    return redirect()->route('showMovies')->with('error', 'Something went wrong, try again');
+                    return redirect()->route('showMovies')->with('error', 'Coś poszło nie tak. Spróbuj ponownie póżniej.');
                 }
-                return redirect()->route('showMovies')->with('success', 'Movie was add to collection');
+                return redirect()->route('showMovies')->with('success', 'Film został dodany pomyślnie do kolekcji.');
             }
         }
 
-        return redirect()->route('showMovies')->with('error', 'You are not logged in');
+        return redirect()->route('showMovies')->with('error', 'Dostęp tylko dla zalogowanych!');
     }
     public function deleteFromCollection(Request $request)
     {
@@ -345,11 +355,11 @@ class MovieController extends Controller
         if($toDelete)
         {
             $toDelete->delete();
-            return redirect()->route('showMovies')->with('success', "Movie from you collection ".$request->name." was delete");
+            return redirect()->route('showMovies')->with('success', "Film został usunięty z kolekcji.");
         }
         else
         {
-            return redirect()->route('showMovies')->with('error', "Something was wrong");
+            return redirect()->route('showMovies')->with('error', "Coś poszło nie tak. Spróbuj ponownie.");
 
         }
     }

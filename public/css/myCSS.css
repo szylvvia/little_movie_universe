@@ -11,7 +11,10 @@
 {
     background-color: #c03939 !important;
 }
-
+.invalid-feedback
+{
+    color: #D98080 !important;
+}
 .checkbox-container
 {
     display: inline-block;
