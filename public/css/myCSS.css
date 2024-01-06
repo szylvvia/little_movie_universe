@@ -13,7 +13,8 @@
 }
 .invalid-feedback
 {
-    color: #D98080 !important;
+    color: #E4A4A4 !important;
+    font-weight: normal !important;
 }
 .checkbox-container
 {
@@ -497,4 +498,9 @@ nav
  .custom-buttons
  {
      margin-top: -30px;
+ }
+
+ .custom-place
+ {
+     margin-top: 20px !important;
  }

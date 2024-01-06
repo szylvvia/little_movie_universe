@@ -90,7 +90,7 @@
                     </div>
                     <div class="col-md-1 offset-md-3 text-right custom-place">
                         <p class="moviePlaceNumber ms-5">{{ ++$counter }}</p>
-                        <p class="moviePlaceText ms-3">miejsce</p>
+                        <p class="moviePlaceText ms-0">miejsce</p>
                     </div>
                 </div>
             @endforeach

@@ -40,13 +40,13 @@ class ImagesSeeder extends Seeder
                 [
                     //goodluck
                     'movie_id' => 2,
-                    'image' => $this->resizeImage(file_get_contents(public_path("img/images/p1.jpg")),600),
+                    'image' => $this->resizeImage(file_get_contents(public_path("img/images/topGun-1.jpg")),600),
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],
                 [
                     'movie_id' => 2,
-                    'image' => $this->resizeImage(file_get_contents(public_path("img/images/p2.jpg")),600),
+                    'image' => $this->resizeImage(file_get_contents(public_path("img/images/topGun-2.jpg")),600),
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],
