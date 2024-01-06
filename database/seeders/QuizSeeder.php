@@ -14,19 +14,19 @@ class QuizSeeder extends Seeder
         $quiz =
             [
                 [
-                    'title' => 'Little Movie Universe Plebiscite',
-                    'description' => 'Vote for you favourite movie!',
-                    'start_date' => '2023-12-11',
-                    'end_date' => '2023-12-17',
+                    'title' => 'Plebiscyt Little Movies Universe',
+                    'description' => 'Weź udział w  plebiscycie i zagłosuj na swój ulubiony film!',
+                    'start_date' => '2024-01-06',
+                    'end_date' => '2024-01-12',
                     'user_id' => 4,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],
                 [
-                    'title' => 'The best Marvel Superhero',
-                    'description' => 'Vote for you favourite Marvel superhero!',
-                    'start_date' => '2023-12-18',
-                    'end_date' => '2023-12-24',
+                    'title' => 'Najlepszy superbohater z filmów Marvela',
+                    'description' => 'Zagłosuj na swojego ulubionego superbohatera z uniwersum Marvela',
+                    'start_date' => '2024-01-13',
+                    'end_date' => '2024-01-31',
                     'user_id' => 4,
                     'created_at' => now(),
                     'updated_at' => now(),

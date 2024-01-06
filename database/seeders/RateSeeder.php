@@ -19,132 +19,132 @@ class RateSeeder extends Seeder
                     'movie_id' => 1,
                     'user_id' => 1,
                     'rate' => 10,
-                    'review' => 'Amazing film!'
+                    'review' => 'Wspaniały film!'
                 ],
                 [
                     'movie_id' => 1,
                     'user_id' => 3,
-                    'rate' => 8,
-                    'review' => 'Not my type of film'
+                    'rate' => 6,
+                    'review' => 'W mojej opini bardzo przeciętna pozycja filmowa.'
                 ],
                 [
                     'movie_id' => 1,
                     'user_id' => 4,
                     'rate' => 10,
-                    'review' => 'Brilliant'
+                    'review' => 'Rewelacyjny!'
                 ],
                 [
                     'movie_id' => 2,
                     'user_id' => 1,
                     'rate' => 5,
-                    'review' => 'Nice'
+                    'review' => 'Dużo szumu medialnego, a film przeciętny.'
                 ],
                 [
                     'movie_id' => 2,
                     'user_id' => 2,
                     'rate' => 10,
-                    'review' => 'Wonderfull'
+                    'review' => 'Rewelacyjny. Świetna obsada!'
                 ],
                 [
                     'movie_id' => 2,
                     'user_id' => 4,
                     'rate' => 10,
-                    'review' => 'Nice'
+                    'review' => 'Od tej pory to mój ulubiony film!'
                 ],
                 //3
                 [
                     'movie_id' => 3,
                     'user_id' => 1,
                     'rate' => 8,
-                    'review' => 'One of my favourite'
+                    'review' => 'Jeden z moich ulubionych. Polecam każdegmu!'
                 ],
                 [
                     'movie_id' => 3,
                     'user_id' => 4,
                     'rate' => 5,
-                    'review' => 'Boring'
+                    'review' => 'Nudny i bardzo przewidywalny.'
                 ],
                 [
                     'movie_id' => 3,
                     'user_id' => 2,
                     'rate' => 9,
-                    'review' => 'Masterpiece'
+                    'review' => 'Prawdziwe filmowe arcydzieło!'
                 ],
                 //4
                 [
                     'movie_id' => 4,
                     'user_id' => 1,
                     'rate' => 10,
-                    'review' => 'Wonderfully story and views'
+                    'review' => 'Przepiękna historia i zniewaljące widoki!'
                 ],
                 [
                     'movie_id' => 4,
                     'user_id' => 4,
                     'rate' => 9,
-                    'review' => 'Should won an Oscars'
+                    'review' => 'Zdecydowanie zasługuje na Oscara!'
                 ],
                 [
                     'movie_id' => 4,
                     'user_id' => 2,
                     'rate' => 4,
-                    'review' => 'Any plot and action. Boring'
+                    'review' => 'Żadnej fabuły i akcji. Nuda.'
                 ],
                 //5
                 [
                     'movie_id' => 5,
                     'user_id' => 2,
                     'rate' => 4,
-                    'review' => 'Any plot and action. Boring'
+                    'review' => 'Bardzo słaby film. Nie polcecam.'
                 ],
                 [
                     'movie_id' => 5,
                     'user_id' => 3,
                     'rate' => 7,
-                    'review' => 'Exciting movie'
+                    'review' => 'Ekscytująca akcja!'
                 ],
                 [
                     'movie_id' => 5,
                     'user_id' => 4,
                     'rate' => 9,
-                    'review' => 'One of my favourite'
+                    'review' => 'Jeden z moich ulubionych'
                 ],
                 //6
                 [
                     'movie_id' => 6,
                     'user_id' => 1,
                     'rate' => 7,
-                    'review' => 'Quick action'
+                    'review' => 'Szybka akcja, nie można się przy nim nudzić.'
                 ],
                 [
                     'movie_id' => 6,
                     'user_id' => 2,
                     'rate' => 10,
-                    'review' => 'Love that film'
+                    'review' => 'Uwielbiam ten film.'
                 ],
                 [
                     'movie_id' => 6,
                     'user_id' => 3,
                     'rate' => 7,
-                    'review' => 'Exciting movie'
+                    'review' => 'Rewelacyjny'
                 ],
                 //7
                 [
                     'movie_id' => 7,
                     'user_id' => 4,
                     'rate' => 10,
-                    'review' => 'I can watching million times'
+                    'review' => 'Mogę ogłądać go milion razy i za każdym razem jest wspaniały!'
                 ],
                 [
                     'movie_id' => 7,
                     'user_id' => 2,
                     'rate' => 5,
-                    'review' => 'I can not understand the phenomenon'
+                    'review' => 'Nie rozumiem fenomenu tego filmu.'
                 ],
                 [
                     'movie_id' => 7,
                     'user_id' => 1,
                     'rate' => 6,
-                    'review' => 'Good for autumns evenings'
+                    'review' => 'Idealny na jesienne wieczory!'
                 ],
 
 

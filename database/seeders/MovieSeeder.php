@@ -29,7 +29,7 @@ class MovieSeeder extends Seeder
             [
                 'title' => "Oppenheimer",
                 'release_date' => "2023-07-19",
-                'description' => "About inventor atom's bomb",
+                'description' => "Film opowiadający o operacji Manhattan, która była związana z wynalezieniem bomby atomowej.",
                 'trailer_link' => 'https://www.youtube.com/embed/uYPbbksJxIg?si=xNrSchejZ11i4OGw',
                 'soundtrack_link' => 'https://open.spotify.com/embed/playlist/5dR1SrU8502qfde3BEACwI?utm_source=generator&theme=0',
                 'status' => "pending",
@@ -39,21 +39,21 @@ class MovieSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
-                'title' => "Good Luck To You, Leo Grande",
-                'release_date' => "2022-07-15",
-                'description' => "About Nancy and Leo",
-                'trailer_link' => 'https://www.youtube.com/embed/bz9TVJvTXVs?si=5DZ8DkFv06RCiVvS',
-                'soundtrack_link' => 'https://open.spotify.com/embed/album/27saD7bPiFsrET0NL4YuqW?utm_source=generator&theme=0',
+                'title' => "Top Gun: Maverick",
+                'release_date' => "2022-05-22",
+                'description' => "Sequel filmu Top Gun. Maverick powraca do topowej szkoły lotniczej, gdze szkoli przyszłych pilotów.",
+                'trailer_link' => 'https://www.youtube.com/embed/Yg1TEuX1xH0?si=l4OgvjSoJ1EfVNrv',
+                'soundtrack_link' => 'https://open.spotify.com/embed/playlist/7nNBIhkf6NcdwOG0yJ7oI3?utm_source=generator&theme=0',
                 'status' => "pending",
-                'poster' => $this->resizeImage(file_get_contents(public_path("img/posters/powodzenia.jpg"))),
+                'poster' => $this->resizeImage(file_get_contents(public_path("img/posters/top_gun.jpg"))),
                 'user_id' => 2,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
             [
-                'title' => "Inception",
+                'title' => "Incepcja",
                 'release_date' => "2010-07-30",
-                'description' => "When brain is crime scene",
+                'description' => "Opowiada o dążeniu ludzi do sterowania ludzkim umysłem.",
                 'trailer_link' => 'https://www.youtube.com/embed/YoHD9XEInc0?si=9GuLi_0AVALnH2YO',
                 'soundtrack_link' => 'https://open.spotify.com/embed/album/2qvA7HmSg1iM6XMiFF76dp?utm_source=generator&theme=0',
                 'status' => "pending",
@@ -63,9 +63,9 @@ class MovieSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
-                'title' => "Call me by your name",
+                'title' => "Tamte noce, tamte dni.",
                 'release_date' => "2010-07-30",
-                'description' => "When brain is crime scene",
+                'description' => "Historia wakacji na południowej, włoskiej prowincji.",
                 'trailer_link' => 'https://www.youtube.com/embed/Z9AYPxH5NTM?si=bEs8qfYW4tulrCgA',
                 'soundtrack_link' => 'https://open.spotify.com/embed/album/7K0x1O9gqMQlDwbMkyCCIM?utm_source=generator&theme=0',
                 'status' => "pending",
@@ -75,9 +75,9 @@ class MovieSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
-                'title' => "Dunkirk",
+                'title' => "Dunkierka",
                 'release_date' => "2017-07-13",
-                'description' => "About sea operation called Dynamo",
+                'description' => "Historia morskiej operacji Dynamo.",
                 'trailer_link' => 'https://www.youtube.com/embed/ed6IhUUN-gI?si=oCL2dXWuQy4VRDgR',
                 'soundtrack_link' => 'https://open.spotify.com/embed/album/1KpQPJOBWeL8kmnwCzYcg8?utm_source=generator&theme=0',
                 'status' => "pending",
@@ -87,9 +87,9 @@ class MovieSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
-                'title' => "Dune",
+                'title' => "Diuna",
                 'release_date' => "2021-09-03",
-                'description' => "Mentally travel prince Paul Atryd",
+                'description' => "Historia mentalnej podróży księcia Paul'a Atryd",
                 'trailer_link' => 'https://www.youtube.com/embed/Way9Dexny3w?si=vKAkPByW7Ly9hwEb',
                 'soundtrack_link' => 'https://open.spotify.com/embed/album/56k8ay5oE5apR61WIeE4wQ?utm_source=generator&theme=0',
                 'status' => "pending",
@@ -101,7 +101,7 @@ class MovieSeeder extends Seeder
             [
                 'title' => "Spider-Man: Homecoming",
                 'release_date' => "2017-07-07",
-                'description' => "Peter Parker discover his new skills",
+                'description' => "Młody chłopak, Peter Parker odkrywa swoje nowe umiejętności.",
                 'trailer_link' => 'https://www.youtube.com/embed/rk-dF1lIbIg?si=puyle0k5TGLCALM2',
                 'soundtrack_link' => 'https://open.spotify.com/embed/album/3Aao9FYpxQXuNrAPjJnud1?utm_source=generator&theme=0',
                 'status' => "pending",

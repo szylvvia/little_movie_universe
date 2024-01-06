@@ -15,7 +15,7 @@ return new class extends Migration
             $table->text("description");
             $table->string("trailer_link", 255);
             $table->string("soundtrack_link", 255);
-            $table->string("status")->default("pending");
+            $table->string("status", 20)->default("pending");
             $table->binary("poster")->length(16777215);
             $table->unsignedBigInteger("user_id")->nullable();
             $table->timestamps();

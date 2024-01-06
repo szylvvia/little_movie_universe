@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger("movie_id");
             $table->unsignedBigInteger("user_id");
             $table->Integer("rate");
-            $table->text("review")->nullable();
+            $table->text("review", 255)->nullable();
             $table->timestamps();
 
             $table->foreign('movie_id')->references('id')->on('movies')->onDelete('cascade');

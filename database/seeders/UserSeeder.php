@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
                 'name' => 'Sylwia',
                 'surname' => 'Krzyszton',
                 'birth_date' => '2000-09-10',
-                'email' => 'sylwia@gmail.com',
+                'email' => 'sylwia@sylwia.com',
                 'role' => 'user',
                 'password' => Hash::make('sylwiasylwia'),
                 'created_at' => now(),
@@ -63,8 +63,8 @@ class UserSeeder extends Seeder
                 'background' => $background
             ],
             [
-                'name' => 'Admin',
-                'surname' => 'Admin',
+                'name' => 'Administartor',
+                'surname' => 'Radosław',
                 'birth_date' => '1999-11-10',
                 'email' => 'admin@admin.com',
                 'role' => 'admin',
