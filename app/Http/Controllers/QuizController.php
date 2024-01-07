@@ -14,17 +14,18 @@ use function PHPUnit\Framework\isNull;
 
 class QuizController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('admin')->except('addAnswer','deleteAnswer');
+        $this->middleware('auth');
+    }
+
     public function addQuizForm()
     {
-        $user = auth()->user();
-        $role = $user->role;
+        return view("addQuizForm");
 
-        if($user and $role=='admin')
-        {
-            return view("addQuizForm");
-        }
-        return view("home");
     }
+
     protected function checkImage()
     {
         return ['image', 'mimes:jpeg,png,jpg', 'mimetypes:image/jpeg,image/png,image/jpg', 'max: 16777215', function ($attribute, $value, $fail) {
@@ -48,8 +49,8 @@ class QuizController extends Controller
             'description' => ['required', 'string'],
             'start_date' => ['required', 'date', 'after_or_equal:today'],
             'end_date' => ['required', 'date', 'after:start_date'],
-            'images.*' => ['required','image', 'mimes:jpeg,png,jpg', 'mimetypes:image/jpeg,image/png,image/jpg','max: 16777215', $this->checkImage()],
-            'options.*' => ['required', 'string', "min:3",'max:100']
+            'images.*' => ['required', 'image', 'mimes:jpeg,png,jpg', 'mimetypes:image/jpeg,image/png,image/jpg', 'max: 16777215', $this->checkImage()],
+            'options.*' => ['required', 'string', "min:3", 'max:100']
         ];
 
         return Validator::make($data, $rules);
@@ -78,51 +79,53 @@ class QuizController extends Controller
 
         return $imageData;
     }
+
     public function addQuiz(Request $request)
     {
-        $user = auth()->user()->id;
 
-        if(auth()->user()->id)
-        {
-            if(auth()->user()->role=='admin') {
-                $validator = $this->validator($request->all());
+            $user = auth()->user()->id;
+            $validator = $this->validator($request->all());
 
-                $validator->after(function ($validator) use ($request) {
-                    $this->validateDateAvailability($validator, $request->start_date, $request->end_date);
-                });
+            $image = $request->file("images");
 
-                if ($validator->fails()) {
-                    return redirect()->back()
-                        ->withErrors($validator)
-                        ->withInput();
-                }
-                $quiz = Quiz::create(
-                    [
-                        'title' => $request->title,
-                        'description' => $request->description,
-                        'start_date' => $request->start_date,
-                        'end_date' => $request->end_date,
-                        'user_id' => $user
-                    ]
-                );
-                $quiz->save();
+            $validator->after(function ($validator) use ($request) {
+                $this->validateDateAvailability($validator, $request->start_date, $request->end_date);
+            });
 
+            $errors = $validator->errors();
+
+            if ($image == null) {
                 for ($i = 1; $i <= 3; $i++) {
-                    $image = $request->file("images.$i");
-
-                    $resizedImage = $this->resizeImage($image, 200);
-                    $quiz->question()->create([
-                        'question' => $request->input("options.$i"),
-                        'image' => $resizedImage,
-                    ]);
+                    $errors->add('images.' . $i, 'Wszytskie obrazy są wymagane!');
                 }
             }
-            else
-            {
-                return redirect()->route("home")->with('error','Dostęo tylko dla administartora!');
+
+            if ($validator->fails()) {
+                return redirect()->back()
+                    ->withErrors($errors)
+                    ->withInput();
             }
-        }
-        return redirect()->route("showAdminPanel")->with('success','Quiz został dodany pomyślnie.');
+            $quiz = Quiz::create(
+                [
+                    'title' => $request->title,
+                    'description' => $request->description,
+                    'start_date' => $request->start_date,
+                    'end_date' => $request->end_date,
+                    'user_id' => $user
+                ]
+            );
+            $quiz->save();
+
+            for ($i = 1; $i <= 3; $i++) {
+                $image = $request->file("images.$i");
+                $resizedImage = $this->resizeImage($image, 200);
+                $quiz->question()->create([
+                    'question' => $request->input("options.$i"),
+                    'image' => $resizedImage,
+                ]);
+            }
+            return redirect()->route("showAdminPanel")->with('success', 'Quiz został dodany pomyślnie.');
+
     }
 
     public function addAnswer(Request $request)
@@ -134,8 +137,8 @@ class QuizController extends Controller
             ->whereDate('end_date', '>=', $currentDate)
             ->first();
 
-        $currentAnswer = Answer::where(['quiz_id'=>$quiz->id, 'user_id'=>auth()->user()->id,'question_id' => $request->question_id])->first();
-        if(isNull($currentAnswer)) {
+        $currentAnswer = Answer::where(['quiz_id' => $quiz->id, 'user_id' => auth()->user()->id, 'question_id' => $request->question_id])->first();
+        if (isNull($currentAnswer)) {
             if ($quiz->id == $request->quiz_id) {
                 $question = Question::where(['id' => $request->question_id])->first();
                 if ($question != null) {
@@ -151,67 +154,47 @@ class QuizController extends Controller
                     }
                 }
             }
-        }
-        else
-        {
+        } else {
             return redirect()->route("home")->with('error', 'Głos do tego quizu został już oddany!');
         }
-        return redirect()->route("home")->with('error','Coś poszło nie tak. Spróbuj ponownie!');
+        return redirect()->route("home")->with('error', 'Coś poszło nie tak. Spróbuj ponownie!');
     }
 
     public function deleteAnswer(Request $request)
     {
-        $this->middleware('auth');
         $user_id = auth()->user()->id;
 
-        $toDelete = Answer::where(['user_id' => $user_id])->where(['quiz_id' => $request->quiz_id])->where(['question_id'=>$request->question_id]);
+        $toDelete = Answer::where(['user_id' => $user_id])->where(['quiz_id' => $request->quiz_id])->where(['question_id' => $request->question_id]);
 
-        if($toDelete)
-        {
+        if ($toDelete) {
             $toDelete->delete();
             return redirect()->route('home')->with('success', 'Głos został usunięty pomyślnie.');
-        }
-        else
-        {
+        } else {
             return redirect()->route('home')->with('error', "Głos na tą odpowiedz nie istnieje!");
-
         }
-
     }
 
     public function deleteQuiz($id)
     {
         $toDelete = Quiz::find($id);
-        if($toDelete)
-        {
+        if ($toDelete and auth()->user()->role == 'admin') {
             $toDelete->delete();
             return redirect()->route('showAdminPanel')->with('success', 'Quiz został usunięty pomyślnie.');
-        }
-        else
-        {
+        } else {
             return redirect()->route('showAdminPanel')->with('error', "Quiz o wybranym ID nie istnieje!");
-
         }
     }
 
     public function editQuizForm($id)
     {
-        $this->middleware('auth');
-
-        $quiz = Quiz::where(['id'=>$id])->first();
-        if($quiz)
-        {
-            if(auth()->user()->id == $quiz->user_id )
-            {
-                return view('editQuiz',compact('quiz'));
-            }
-            else
-            {
+        $quiz = Quiz::where(['id' => $id])->first();
+        if ($quiz) {
+            if (auth()->user()->id == $quiz->user_id) {
+                return view('editQuiz', compact('quiz'));
+            } else {
                 return redirect()->route('showAdminPanel')->with('error', "Wybrany quiz nie należy do Ciebie!");
             }
-        }
-        else
-        {
+        } else {
             return redirect()->route('showAdminPanel')->with('error', "Quiz o wybranym ID nie istenieje!");
         }
     }
@@ -223,12 +206,13 @@ class QuizController extends Controller
             'description' => ['required', 'string'],
             'start_date' => ['required', 'date', 'after_or_equal:today'],
             'end_date' => ['required', 'date', 'after:start_date'],
-            'images.*' => ['image', 'mimes:jpeg,png,jpg', 'mimetypes:image/jpeg,image/png,image/jpg','max: 16777215', $this->checkImage()],
-            'questions.*' => ['required', 'string', "min:3",'max:100']
+            'images.*' => ['image', 'mimes:jpeg,png,jpg', 'mimetypes:image/jpeg,image/png,image/jpg', 'max: 16777215', $this->checkImage()],
+            'questions.*' => ['required', 'string', "min:3", 'max:100']
         ];
 
         return Validator::make($data, $rules);
     }
+
     protected function validateDateAvailabilityForEdit($validator, $start, $end, $id)
     {
         $quizzes = Quiz::where(function ($query) use ($start, $end) {
@@ -237,10 +221,8 @@ class QuizController extends Controller
         })->get();
 
         if (sizeof($quizzes) > 0) {
-            foreach ($quizzes as $q)
-            {
-                if($q->id != $id)
-                {
+            foreach ($quizzes as $q) {
+                if ($q->id != $id) {
                     $validator->errors()->add('start_date', 'Data rozpoczęcia jest już zajęta!');
                     $validator->errors()->add('end_date', 'Data zakończenia jest już zajęta!');
                 }
@@ -248,11 +230,10 @@ class QuizController extends Controller
 
         }
     }
+
     public function editQuiz(Request $request, $id)
     {
-        $this->middleware('auth');
         $user = auth()->user()->id;
-
         $quiz = Quiz::find($id);
 
         if ($quiz->user_id == $user) {
@@ -290,9 +271,7 @@ class QuizController extends Controller
 
                 if ($request->hasFile($imageFieldName)) {
                     $image = $this->resizeImage($request->file($imageFieldName), 200);
-                }
-                else
-                {
+                } else {
                     $image = $q->image;
                 }
 
@@ -302,11 +281,9 @@ class QuizController extends Controller
                 ]);
             }
             return redirect()->route('showAdminPanel')->with('success', 'Quiz został zaktualizowany pomyślnie!');
-        }
-        else
+        } else
         {
             return redirect()->route('showAdminPanel')->with('success', 'Quiz nie należy do Ciebie!');
-
         }
 
     }

@@ -6,6 +6,8 @@ use App\Models\Movie;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class AdminTestUnit extends TestCase
@@ -29,7 +31,15 @@ class AdminTestUnit extends TestCase
             ]
         );
         $this->actingAs($admin);
-        $response = $this->get("/adminPanel");
+        Storage::fake('public');
+        $file = UploadedFile::fake()->image('image.jpg');
+
+        $movie =
+            [
+
+            ];
+
+        $response = $this->post("/adminPanel");
         $response->assertStatus(200);
     }
 

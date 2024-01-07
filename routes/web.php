@@ -29,6 +29,10 @@ Route::get('/search/{string}', [App\Http\Controllers\SearchController::class, 's
 Route::get('/searchReturnJson/{string}', [App\Http\Controllers\SearchController::class, 'searchReturnJson'])->name('searchReturnJson');
 Route::get('/showUser/{id}', [App\Http\Controllers\UserController::class, 'showUser'])->name('showUser');
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/movies/edit/{id}', [App\Http\Controllers\MovieController::class, 'editMovieForm'])->name('editMovieForm');
+});
+
 
 Auth::routes();
 Route::get('/addArtist', [App\Http\Controllers\ArtistController::class, 'addArtistForm'])->name('addArtistForm');

@@ -147,6 +147,4 @@ class MovieTestUnit extends TestCase
         $response->assertSessionHas('error', "Movie with this ID doesn't exist!");
     }
 
-
-
 }

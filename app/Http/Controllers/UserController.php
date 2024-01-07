@@ -12,10 +12,13 @@ use Intervention\Image\Facades\Image;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except('showUser');
+    }
+
     public function getUserId()
     {
-        $this->middleware('auth');
-
         if(auth()->user()==null)
         {
             return null;
@@ -46,7 +49,6 @@ class UserController extends Controller
 
     public function deleteUser()
     {
-        $this->middleware('auth');
         $id = $this->getUserId();
         $toDelete = User::find($id);
         if($toDelete)
@@ -59,12 +61,11 @@ class UserController extends Controller
 
     public function editUserForm()
     {
-        $this->middleware('auth');
-
         $id = $this->getUserId();
         $user = User::find($id);
         return view("editUser", compact("user"));
     }
+
     protected function checkImage()
     {
         return ['image','max: 16777215', function ($attribute, $value, $fail) {
@@ -101,7 +102,6 @@ class UserController extends Controller
     }
     public function editUser(Request $request)
     {
-        $this->middleware('auth');
         $id = $this->getUserId();
         $user = User::find($id);
 

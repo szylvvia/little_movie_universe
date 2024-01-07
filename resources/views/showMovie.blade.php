@@ -24,30 +24,28 @@
                     </div>
                     <div class="col-md-9">
                         <div class="col-md-12 d-flex align-items-center ms-5">
-                        <h1>{{$movie->title}}</h1>
-                        @auth
-                            @if(auth()->user()->id)
-                                @if(auth()->user()->id==$movie->user_id or auth()->user()->role=='admin')
-                                            <button type="button" class="btn" data-bs-toggle="modal"
-                                                    data-bs-target="#confirmDeleteModal" title="Usuń film"><i class="bi bi-x-circle delete-icon"></i>
-                                            </button>
-                                            <a href="{{ route('editMovieForm', ['id' => $movie->id]) }}" class="text-decoration-none" title="Edytuj film"><i class="bi bi-pen edit-icon"></i></a>
-                        </div>
-                                    <div class="modal fade" id="confirmDeleteModal" tabindex="-1"
-                                         aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                            <h1>{{$movie->title}}</h1>
+                            @auth
+                                @if(auth()->user()->id && (auth()->user()->id == $movie->user_id || auth()->user()->role == 'admin'))
+                                    <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" title="Usuń film">
+                                        <i class="bi bi-x-circle delete-icon"></i>
+                                    </button>
+                                    <a href="{{ route('editMovieForm', ['id' => $movie->id]) }}" class="text-decoration-none" title="Edytuj film">
+                                        <i class="bi bi-pen edit-icon"></i>
+                                    </a>
+
+                                    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="confirmDeleteModalLabel">Usuń film</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Anuluj"></button>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Anuluj"></button>
                                                 </div>
                                                 <div class="modal-body">
                                                     Czy na pewno chcesz usunąć film <strong>{{$movie->title}}</strong>?
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn add-button" data-bs-dismiss="modal">Anuluj
-                                                    </button>
+                                                    <button type="button" class="btn add-button" data-bs-dismiss="modal">Anuluj</button>
                                                     <form method="POST" action="{{ route('deleteMovie', ['id' => $movie->id]) }}">
                                                         @csrf
                                                         @method('DELETE')
@@ -58,14 +56,17 @@
                                         </div>
                                     </div>
                                 @endif
-                            @endif
-                        @endauth
+                            @endauth
+                        </div>
+
                         <p class="ms-5"><i>{{$movie->description}}</i></p>
                         <p class="ms-5">Release date {{$movie->release_date}}</p>
+
                         <div class="mb-4 ms-5">
                             <img src="{{asset('img/Gold_Star.png')}}" alt="star" class="little-star">
                             <span class="ml-2">{{number_format($avgRate,1)}}</span>
                         </div>
+
                         <div class="row ms-3">
                             @foreach($movie->artist as $a)
                                 <div class="col-md-2 text-center custom-text">
@@ -80,8 +81,7 @@
                         </div>
                     </div>
                 </div>
-
-            <div class="row mb-3">
+                <div class="row mb-3">
                 <div class="col-md-8">
                     <iframe class="trailer" height="352" src="{{$movie->trailer_link}}" title="{{$movie->title}}"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

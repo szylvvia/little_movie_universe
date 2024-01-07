@@ -70,7 +70,7 @@
                         <div class="row mb-3">
                             <label for="option{{$i}}" class="col-md-4 col-form-label text-md-end">{{ __('Opcja ') }}{{$i}}</label>
                             <div class="col-md-6">
-                                <input id="option{{$i}}" type="text" class="form-control @error('options.'.$i) is-invalid @enderror" name="options[{{$i}}]" value="{{ old('options.'.$i) }}" required autocomplete="option{{$i}}" autofocus>
+                                <input id="option{{$i}}" type="text" class="form-control @error('options.'.$i) is-invalid @enderror" name="options[{{$i}}]" value="{{ old('options.'.$i) }}"  autocomplete="option{{$i}}" autofocus>
                                 @error('options.'.$i)
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -81,7 +81,7 @@
                         <div class="row mb-3">
                             <label for="image{{$i}}" class="col-md-4 col-form-label text-md-end">{{ __('Obraz ') }}{{$i}}</label>
                             <div class="col-md-6">
-                                <input id="image{{$i}}" required type="file" class="form-control @error('images.'.$i) is-invalid @enderror" name="images[{{$i}}]" value="{{ old('images.'.$i) }}" autocomplete="off" autofocus>
+                                <input id="image{{$i}}" type="file" class="form-control @error('images.'.$i) is-invalid @enderror" name="images[{{$i}}]" value="{{ old('images.'.$i) }}" autocomplete="off" autofocus>
                                 <div id="jsPosterErrorMessages{{$i}}" role="alert"></div>
                                 @error('images.'.$i)
                                 <span class="invalid-feedback" role="alert">

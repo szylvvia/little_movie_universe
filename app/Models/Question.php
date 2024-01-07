@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Testing\WithFaker;
 
 class Question extends Model
 {
-    use HasFactory;
+    use HasFactory, WithFaker;
 
     protected $fillable = [
         'question',

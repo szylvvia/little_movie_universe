@@ -13,6 +13,10 @@ use Intervention\Image\Facades\Image;
 
 class ArtistController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except('showArtists', 'showArtist');
+    }
     public function showArtists()
     {
         $artist = Artist::where('status', 'verified')->get();
@@ -63,8 +67,6 @@ class ArtistController extends Controller
 
     public function addArtist(Request $request)
     {
-        $this->middleware('auth');
-
         $imageValidator = $this->validatorImageRequire($request->all());
         $validator = $this->validator($request->all());
 
@@ -99,8 +101,6 @@ class ArtistController extends Controller
 
     public function deleteArtist($id)
     {
-        $this->middleware('auth');
-
         $toDelete = Artist::find($id);
         if($toDelete->user_id==auth()->user()->id or auth()->user()->role=='admin')
         {
@@ -112,7 +112,6 @@ class ArtistController extends Controller
             else
             {
                 return redirect()->route('showArtist')->with('error', "Artysta o podanym ID nie istnieje!");
-
             }
         }
         else
@@ -123,7 +122,6 @@ class ArtistController extends Controller
     }
     public function editArtistForm($id)
     {
-        $this->middleware('auth');
         $artist = Artist::find($id);
         if($artist->user_id==auth()->user()->id or auth()->user()->role=='admin')
         {
@@ -133,7 +131,6 @@ class ArtistController extends Controller
         {
             return redirect()->route('showArtist', ['id' => $artist->id])->with('error', "Ten artysta nie należy do Ciebie!");
         }
-
     }
 
     public function editArtist(Request $request, $id)
