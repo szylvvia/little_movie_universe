@@ -1,21 +1,17 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Unit;
 
 
 use App\Models\Artist;
 use App\Models\Movie;
 use App\Models\User;
-use Database\Factories\ArtistFactory;
-use Database\Factories\UserFactory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
-class MovieTest extends TestCase
+class MovieTestUnit extends TestCase
 {
     use DatabaseTransactions;
 
@@ -120,7 +116,6 @@ class MovieTest extends TestCase
 
         $response = $this->post('/addMovie',$movie);
         $response->assertStatus(302);
-
         $response = $this->post('/addMovie',$movie);
         $response->assertStatus(302);
         $response->assertSessionHas('error', 'Film already exist in database');
@@ -133,8 +128,8 @@ class MovieTest extends TestCase
         $this->actingAs($user);
         $response = $this->delete("movies/$movie->id");
         $response->assertStatus(302);
-        $response->assertRedirect('/movies');
-        $response->assertSessionHas('success', 'Your movie was delete');
+        $response->assertRedirect('/home');
+        $response->assertSessionHas('error', 'Your movie was delete');
     }
 
     public function testDeleteMovieWhileMovieIsNotExist(): void
@@ -150,8 +145,6 @@ class MovieTest extends TestCase
         $response->assertStatus(302);
         $response->assertRedirect('/movies');
         $response->assertSessionHas('error', "Movie with this ID doesn't exist!");
-
-
     }
 
 

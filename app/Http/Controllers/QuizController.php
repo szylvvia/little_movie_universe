@@ -44,12 +44,12 @@ class QuizController extends Controller
     protected function validator(array $data)
     {
         $rules = [
-            'title' => ['required', 'string'],
+            'title' => ['required', 'string', 'min:10'],
             'description' => ['required', 'string'],
             'start_date' => ['required', 'date', 'after_or_equal:today'],
             'end_date' => ['required', 'date', 'after:start_date'],
             'images.*' => ['required','image', 'mimes:jpeg,png,jpg', 'mimetypes:image/jpeg,image/png,image/jpg','max: 16777215', $this->checkImage()],
-            'questions.*' => ['required', 'string', "min:3",'max:100']
+            'options.*' => ['required', 'string', "min:3",'max:100']
         ];
 
         return Validator::make($data, $rules);
@@ -96,7 +96,6 @@ class QuizController extends Controller
                         ->withErrors($validator)
                         ->withInput();
                 }
-
                 $quiz = Quiz::create(
                     [
                         'title' => $request->title,
@@ -179,7 +178,6 @@ class QuizController extends Controller
         }
 
     }
-
 
     public function deleteQuiz($id)
     {

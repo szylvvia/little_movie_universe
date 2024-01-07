@@ -58,9 +58,9 @@ class AdminController extends Controller
                 }
                 return redirect()->route('showAdminPanel')->with('error', 'Coś poszło nie tak. Spróbuj ponownie póżniej.');
             }
-            return redirect()->route('showAdminPanel')->with('error', 'Dostęp tylko dla administratora');
+            return redirect()->route("home")->with('error', 'Dostęp tylko dla administratora');
         }
-        return redirect()->route('showAdminPanel')->with('error', 'Dostęp tylko dla zalogowanych');
+        return redirect()->route('home')->with('error', 'Dostęp tylko dla zalogowanych');
     }
 
     public function verifyArtist(Request $request)

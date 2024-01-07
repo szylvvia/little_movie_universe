@@ -28,5 +28,4 @@ class UserFactory extends Factory
             'background' => $this->faker->imageUrl(),
         ];
     }
-
 }

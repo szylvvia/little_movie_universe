@@ -205,6 +205,12 @@ return [
         'rate' => 'ocena',
         'review' => 'recenzja',
         'background' => 'tło',
+        'options.1' => 'opcja 1',
+        'options.2' => 'opcja 2',
+        'options.3' => 'opcja 3',
+        'images.1' => 'obraz 1',
+        'images.2' => 'obraz 2',
+        'images.3' => 'obraz 3',
     ],
 
 ];
