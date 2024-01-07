@@ -45,7 +45,7 @@ class MovieTestUnit extends TestCase
         $response = $this->post('/addMovie',$movie);
         $response->assertStatus(302);
         $response->assertRedirect('/movies');
-        $response->assertSessionHas('success', 'Film was added successfully');
+        $response->assertSessionHas('success', 'Film został dodany pomyślnie.');
     }
 
     public function testAddMovieWhileTrailerLinkIsInvalid(): void
@@ -81,7 +81,7 @@ class MovieTestUnit extends TestCase
         $response->assertSessionHasErrors('trailerLink');
 
         $response->assertSessionHasErrors([
-            'trailerLink' => 'The trailer link field must start with one of the following: https://www.youtube.com/watch?v=.',
+            'trailerLink' => "Pole link do trailera'a musi zaczynać się jednym z następujących: https://www.youtube.com/watch?v=.",
         ]);
 
     }
@@ -118,33 +118,43 @@ class MovieTestUnit extends TestCase
         $response->assertStatus(302);
         $response = $this->post('/addMovie',$movie);
         $response->assertStatus(302);
-        $response->assertSessionHas('error', 'Film already exist in database');
+        $response->assertSessionHas('error', 'Film już istnieje w bazie danych!');
     }
 
     public function testDeleteMovieWhileMovieIsExist(): void
     {
         $user = User::factory()->create();
-        $movie = Movie::factory()->create();
         $this->actingAs($user);
+        $movie = Movie::factory()->create(
+            [
+                'user_id' => $user->id,
+            ]
+        );
         $response = $this->delete("movies/$movie->id");
         $response->assertStatus(302);
-        $response->assertRedirect('/home');
-        $response->assertSessionHas('error', 'Your movie was delete');
+        $response->assertRedirect('/movies');
+        $response->assertSessionHas('success', 'Film został usunięty pomyślnie.');
     }
 
     public function testDeleteMovieWhileMovieIsNotExist(): void
     {
         $user = User::factory()->create();
-        $movie = Movie::factory()->create();
         $this->actingAs($user);
+        $movie = Movie::factory()->create(
+            [
+                'user_id' => $user->id,
+            ]
+        );
+        $movie_id = $movie->id;
+
         $response = $this->delete("movies/$movie->id");
         $response->assertStatus(302);
         $response->assertRedirect('/movies');
-        $response->assertSessionHas('success', 'Your movie was delete');
-        $response = $this->delete("movies/$movie->id");
+        $response->assertSessionHas('success', 'Film został usunięty pomyślnie.');
+        $response = $this->delete("movies/$movie_id");
         $response->assertStatus(302);
         $response->assertRedirect('/movies');
-        $response->assertSessionHas('error', "Movie with this ID doesn't exist!");
+        $response->assertSessionHas('error', "Wybrany film nie istnieje!");
     }
 
 }

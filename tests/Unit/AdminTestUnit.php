@@ -18,11 +18,12 @@ class AdminTestUnit extends TestCase
     {
         $user = User::factory()->create();
         $this->actingAs($user);
-        $response = $this->get("/adminPanel");
+        $response = $this->get(route('showAdminPanel'));
         $response->assertStatus(302);
-        $response->assertRedirect('/');
-        $response->assertSessionHas('error', 'Dostęp tylko dla administatora');
+        $response->assertRedirect(route('home'));
+        $response->assertSessionHas('error', 'Dostęp tylko dla administratora!');
     }
+
     public function testShowAdminPanelWhenUserIsAdmin()
     {
         $admin = User::factory()->create(
@@ -31,15 +32,7 @@ class AdminTestUnit extends TestCase
             ]
         );
         $this->actingAs($admin);
-        Storage::fake('public');
-        $file = UploadedFile::fake()->image('image.jpg');
-
-        $movie =
-            [
-
-            ];
-
-        $response = $this->post("/adminPanel");
+        $response = $this->get("/adminPanel");
         $response->assertStatus(200);
     }
 
@@ -75,6 +68,6 @@ class AdminTestUnit extends TestCase
         $response = $this->post("/verifyMovie",$decision);
         $response->assertStatus(302);
         $response->assertRedirect('/');
-        $response->assertSessionHas('error', 'Dostęp tylko dla administratora');
+        $response->assertSessionHas('error', 'Dostęp tylko dla administratora!');
     }
 }

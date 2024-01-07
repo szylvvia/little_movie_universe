@@ -200,16 +200,15 @@ class MovieController extends Controller
     public function deleteMovie($id)
     {
         $toDelete = Movie::find($id);
-        if (auth()->user()->id == $toDelete->user_id or auth()->user()->role == 'admin') {
-            if ($toDelete) {
+        if ($toDelete) {
+            if (auth()->user()->id == $toDelete->user_id or auth()->user()->role == 'admin') {
                 $toDelete->delete();
                 return redirect()->route('showMovies')->with('success', 'Film został usunięty pomyślnie.');
             } else {
-                return redirect()->route('showMovies')->with('error', "Film o podanym ID nie istenieje!");
-
+                return redirect()->route('showMovies')->with('error', "Film nie należy do Ciebie!");
             }
         }
-        return redirect()->route('showMovies')->with('error', "Wybrany film nie należy do Ciebie!");
+        return redirect()->route('showMovies')->with('error', "Wybrany film nie istnieje!");
 
     }
 
