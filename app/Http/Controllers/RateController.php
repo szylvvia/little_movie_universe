@@ -16,7 +16,7 @@ class RateController extends Controller
     }
     protected function validator(array $data)
     {
-        return Validator::make($data, array_merge([
+        $rules = [
             'rate' => ['required', 'min:1', 'max:10'],
             'review' => ['nullable','string', 'max:255',function ($attribute, $value, $fail) {
                 $cleanedReview = strip_tags($value);
@@ -24,8 +24,8 @@ class RateController extends Controller
                     $fail('Recenzja jest niepoprawna!');
                 }
             }]
-
-        ]));
+        ];
+        return Validator::make($data, $rules);
     }
 
     public function addOrEditRate($id,Request $request)

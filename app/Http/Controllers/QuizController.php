@@ -21,7 +21,7 @@ class QuizController extends Controller
 
     public function addQuizForm()
     {
-        if(auth()->user()->role == 'admin') {
+        if (auth()->user()->role == 'admin') {
             return view("addQuizForm");
         }
         return redirect()->route("home")->with('error', 'Dostęp tylko dla administratora!');
@@ -85,7 +85,7 @@ class QuizController extends Controller
 
     public function addQuiz(Request $request)
     {
-        if(auth()->user()->role == 'admin') {
+        if (auth()->user()->role == 'admin') {
             $user = auth()->user()->id;
             $validator = $this->validator($request->all());
 
@@ -238,60 +238,62 @@ class QuizController extends Controller
 
     public function editQuiz(Request $request, $id)
     {
-        if(auth()->user()->role == 'admin') {
+        if (auth()->user()->role == 'admin') {
             $user = auth()->user()->id;
             $quiz = Quiz::find($id);
 
-            if ($quiz->user_id == $user) {
-                $validator = $this->validatorForEdit($request->all());
+            if ($quiz) {
+                if ($quiz->user_id == $user) {
+                    $validator = $this->validatorForEdit($request->all());
 
-                $validator->after(function ($validator) use ($request, $id) {
-                    $this->validateDateAvailabilityForEdit($validator, $request->start_date, $request->end_date, $id);
-                });
+                    $validator->after(function ($validator) use ($request, $id) {
+                        $this->validateDateAvailabilityForEdit($validator, $request->start_date, $request->end_date, $id);
+                    });
 
-                if ($validator->fails()) {
-                    return redirect()->back()
-                        ->withErrors($validator)
-                        ->withInput();
-                }
-
-                $questions = Question::where(['quiz_id' => $quiz->id])->get();
-
-                foreach ($questions as $q) {
-                    $imageFieldName = "images.{$q->id}";
-
-                    if (!$request->hasFile($imageFieldName)) {
-                        $request->merge([$imageFieldName => $q->image]);
-                    }
-                }
-
-                $quiz->update([
-                    'title' => $request->title,
-                    'description' => $request->description,
-                    'start_date' => $request->start_date,
-                    'end_date' => $request->end_date,
-                ]);
-
-                foreach ($questions as $q) {
-                    $imageFieldName = "images.{$q->id}";
-
-                    if ($request->hasFile($imageFieldName)) {
-                        $image = $this->resizeImage($request->file($imageFieldName), 200);
-                    } else {
-                        $image = $q->image;
+                    if ($validator->fails()) {
+                        return redirect()->back()
+                            ->withErrors($validator)
+                            ->withInput();
                     }
 
-                    $quiz->question()->where('id', $q->id)->update([
-                        'question' => $request->input("questions.{$q->id}"),
-                        'image' => $image,
+                    $questions = Question::where(['quiz_id' => $quiz->id])->get();
+
+                    foreach ($questions as $q) {
+                        $imageFieldName = "images.{$q->id}";
+
+                        if (!$request->hasFile($imageFieldName)) {
+                            $request->merge([$imageFieldName => $q->image]);
+                        }
+                    }
+
+                    $quiz->update([
+                        'title' => $request->title,
+                        'description' => $request->description,
+                        'start_date' => $request->start_date,
+                        'end_date' => $request->end_date,
                     ]);
+
+                    foreach ($questions as $q) {
+                        $imageFieldName = "images.{$q->id}";
+
+                        if ($request->hasFile($imageFieldName)) {
+                            $image = $this->resizeImage($request->file($imageFieldName), 200);
+                        } else {
+                            $image = $q->image;
+                        }
+
+                        $quiz->question()->where('id', $q->id)->update([
+                            'question' => $request->input("questions.{$q->id}"),
+                            'image' => $image,
+                        ]);
+                    }
+                    return redirect()->route('showAdminPanel')->with('success', 'Quiz został zaktualizowany pomyślnie!');
+                } else {
+                    return redirect()->route('showAdminPanel')->with('success', 'Quiz nie należy do Ciebie!');
                 }
-                return redirect()->route('showAdminPanel')->with('success', 'Quiz został zaktualizowany pomyślnie!');
-            } else {
-                return redirect()->route('showAdminPanel')->with('success', 'Quiz nie należy do Ciebie!');
             }
+            return redirect()->route('showAdminPanel')->with('error', 'Quiz o podanym ID nie istnieje!');
         }
         return redirect()->route('home')->with('error', 'Dostęp tylko dla administratora');
-
     }
 }
