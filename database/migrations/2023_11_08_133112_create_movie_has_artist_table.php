@@ -15,14 +15,10 @@ return new class extends Migration
             $table->unsignedBigInteger("movie_id");
             $table->unsignedBigInteger("artist_id");
             $table->timestamps();
-
             $table->foreign('movie_id')->references('id')->on('movies')->onDelete('cascade');
             $table->foreign('artist_id')->references('id')->on('artists')->onDelete('cascade');
-
             $table->unique(['movie_id', 'artist_id']);
-
         });
-
     }
 
     /**

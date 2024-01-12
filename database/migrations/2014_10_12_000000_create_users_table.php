@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('surname', 50);
             $table->Date('birth_date');
             $table->string('email')->unique();
-            $table->string('role')->default('user');
+            $table->string('role',10)->default('user');
             $table->string('password');
             $table->text('description')->nullable();
             $table->binary('image')->nullable();
