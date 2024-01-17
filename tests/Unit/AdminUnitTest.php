@@ -10,7 +10,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
-class AdminTestUnit extends TestCase
+class AdminUnitTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -26,11 +26,7 @@ class AdminTestUnit extends TestCase
 
     public function testShowAdminPanelWhenUserIsAdmin()
     {
-        $admin = User::factory()->create(
-            [
-                'role' => 'admin'
-            ]
-        );
+        $admin = User::factory()->create([ 'role' => 'admin']);
         $this->actingAs($admin);
         $response = $this->get("/adminPanel");
         $response->assertStatus(200);
@@ -38,17 +34,11 @@ class AdminTestUnit extends TestCase
 
     public function testVerifyMovieByDecisionVerifiedWhenUserIsAdmin()
     {
-        $admin = User::factory()->create(
-            [
-                'role' => 'admin'
-            ]
-        );
+        $admin = User::factory()->create(['role' => 'admin']);
         $movie = Movie::factory()->create();
-        $decision =
-            [
+        $decision = [
                 'decision'=>'verified',
-                'id' => $movie->id,
-            ];
+                'id' => $movie->id,];
         $this->actingAs($admin);
         $response = $this->post("/verifyMovie",$decision);
         $response->assertStatus(302);

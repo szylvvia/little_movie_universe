@@ -1,5 +1,7 @@
 <?php
+use Carbon\Carbon;
 
+$today = Carbon::now()->format('Y-m-d');
 return [
 
     /*
@@ -23,7 +25,10 @@ return [
     'alpha_num' => 'Pole :attribute musi zawierać tylko litery i cyfry.',
     'array' => 'Pole :attribute musi być tablicą.',
     'ascii' => 'Pole :attribute musi zawierać tylko jednobajtowe znaki alfanumeryczne i symbole.',
-    'before' => 'Pole :attribute musi być datą po :date',
+    'before' => [
+        'date' => 'Pole :attribute musi być datą przed :date',
+        'today' => 'Pole :attribute musi być datą wcześniejszą niż dzisiaj',
+    ],
     'before_or_equal' => 'Pole :attribute musi być datą przed lub równą :date.',
     'between' => [
         'array' => 'Pole :attribute musi mieć od :min do :max elementów.',

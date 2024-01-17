@@ -57,7 +57,7 @@ class MovieController extends Controller
 
     public function addMovieForm()
     {
-        $artist = Artist::all();
+        $artist = Artist::where('status', 'verified')->get();
         return view("addMovie", compact('artist'));
     }
 
@@ -186,15 +186,34 @@ class MovieController extends Controller
 
     public function showMovie($id)
     {
-        $userRate = null;
-        if (auth()->user() != null) {
-            $user_id = auth()->user()->id;
-            $userRate = Rate::where('user_id', $user_id)->where('movie_id', $id)->first();
-        }
         $movie = Movie::find($id);
-        $movie->release_date = Carbon::parse($movie->release_date)->format('d.m.Y');
-        $avgRate = $this->avgMovie($id);
-        return view("showMovie", compact("movie", "userRate", "avgRate"));
+        if($movie!=null)
+        {
+            $movie->release_date = Carbon::parse($movie->release_date)->format('d.m.Y');
+            $avgRate = $this->avgMovie($id);
+            $userRate = null;
+            if (auth()->user() != null) {
+                $user_id = auth()->user()->id;
+                $userRate = Rate::where('user_id', $user_id)->where('movie_id', $id)->first();
+
+                $fav = Collection::where([
+                        'movie_id' => $movie->id,
+                        'user_id' => auth()->user()->id,
+                        'name' => 'favorite'
+                    ])->exists();
+
+                    $watch = Collection::where([
+                        'movie_id' => $movie->id,
+                        'user_id' => auth()->user()->id,
+                        'name' => 'toWatch'
+                    ])->exists();
+
+                    $movie->isFav = $fav;
+                    $movie->isWatch = $watch;
+            }
+            return view("showMovie", compact("movie", "userRate", "avgRate"));
+        }
+        return redirect()->route('showMovies')->with('error', "Wybrany film nie istnieje!");
     }
 
     public function deleteMovie($id)
@@ -219,8 +238,10 @@ class MovieController extends Controller
         return view("editMovie", compact("movie", "artist"));
     }
 
-    protected function validatorForEdit(array $data)
+    protected function validatorForEdit(array $data, $movie)
     {
+        if(!isset($data['images'])){$data['images']=[];};
+
         return Validator::make($data, array_merge([
             'title' => ['required', 'string'],
             'releaseDate' => ['required', 'date'],
@@ -230,61 +251,66 @@ class MovieController extends Controller
             'artists' => ['array', 'min:1', 'exists:artists,id'],
             'poster' => ['image', 'mimes:jpeg,png,jpg', 'mimetypes:image/jpeg,image/png,image/jpg', 'max: 16777215', $this->checkImage()],
             'images.*' => ['image', 'mimes:jpeg,png,jpg', 'mimetypes:image/jpeg,image/png,image/jpg', 'max: 16777215', $this->checkImage()],
-            'imagesToDelete' => ['array', function ($attribute, $value, $fail) use ($data) {
-                if (count($value) === count($data['images']) && empty($data['images'])) {
-                    $fail("Film musi zawierać przynajmniej jeden fotos!");
-                }
-            }]
         ]));
     }
 
     public function editMovie(Request $request, $id)
     {
         $edit = Movie::find($id);
-        if (auth()->user()->id == $edit->user_id or auth()->user()->role == 'admin') {
-            if ($request->poster == null) {
-                $request->poster = $edit->poster;
-            }
-
-            if ($request->imagesToDelete != null) {
-                $imagesToDelete = $request->input('imagesToDelete');
-                $edit->image()->whereIn('id', $imagesToDelete)->delete();
-            }
-            $t = $this->changeTrailerLink($request->trailerLink);
-            $s = $this->changeSoundtrackLink($request->soundtrackLink);
-            $request->trailer_link = $t;
-            $request->soundtrackLink = $s;
-
-            $validator = $this->validatorForEdit($request->all());
-            if ($validator->fails()) {
-                return redirect()->back()
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-            $p = $this->resizeImage($request->poster, 300);
-
-            $edit->update([
-                'title' => $request->title,
-                'release_date' => $request->releaseDate,
-                'description' => $request->description,
-                'trailer_link' => $t,
-                'soundtrack_link' => $s,
-                'poster' => $p,
-                'status' => 'pending',
-            ]);
-            if (!empty($request->images)) {
-                foreach ($request->images as $image) {
-                    $i = $this->resizeImage($image, 600);
-                    $edit->image()->create([
-                        'image' => $i,
-                    ]);
+        if($edit) {
+            if (auth()->user()->id == $edit->user_id or auth()->user()->role == 'admin') {
+                if ($request->poster == null) {
+                    $request->poster = $edit->poster;
                 }
+                $t = $this->changeTrailerLink($request->trailerLink);
+                $s = $this->changeSoundtrackLink($request->soundtrackLink);
+                $request->trailer_link = $t;
+                $request->soundtrackLink = $s;
+
+                if(!isset($request->images)){$request->images=[];};
+                if(!isset($request->imagesToDelete)){$request->imagesToDelete=[];};
+                if((count($request->images)==0) && (count($request->imagesToDelete)==$edit->image->count()))
+                {
+                    return redirect()->back()
+                        ->withErrors(['images' => 'Film musi mieć przynajmniej jeden fotos'])
+                        ->withInput();
+                }
+                $validator = $this->validatorForEdit($request->all(), $edit);
+                if ($validator->fails()) {
+                    return redirect()->back()
+                        ->withErrors($validator)
+                        ->withInput();
+                }
+                if ($request->imagesToDelete != null) {
+                    $imagesToDelete = $request->input('imagesToDelete');
+                    $edit->image()->whereIn('id', $imagesToDelete)->delete();
+                }
+                $p = $this->resizeImage($request->poster, 300);
+
+                $edit->update([
+                    'title' => $request->title,
+                    'release_date' => $request->releaseDate,
+                    'description' => $request->description,
+                    'trailer_link' => $t,
+                    'soundtrack_link' => $s,
+                    'poster' => $p,
+                    'status' => 'pending',
+                ]);
+                if (!empty($request->images)) {
+                    foreach ($request->images as $image) {
+                        $i = $this->resizeImage($image, 600);
+                        $edit->image()->create([
+                            'image' => $i,
+                        ]);
+                    }
+                }
+                if (auth()->user()->role == 'admin') {
+                    return redirect()->route('showAdminPanel')->with('success', 'Film został zaktualizowany pomyślnie.');
+                }
+                return redirect()->route('showMovie', ['id' => $id])->with('success', 'Film został zaktualizowany pomyślnie.');
             }
-            if (auth()->user()->role == 'admin') {
-                return redirect()->route('showAdminPanel')->with('success', 'Film został zaktualizowany pomyślnie.');
-            }
-            return redirect()->route('showMovie', ['id' => $id])->with('success', 'Film został zaktualizowany pomyślnie.');
         }
+        return redirect()->route('showMovies')->with('error', 'Film o podanym identyfikatorze nie istnieje.');
 
     }
 

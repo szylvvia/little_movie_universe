@@ -14,9 +14,15 @@ class SearchController extends Controller
         $movies = Movie::where('title','like', '%' . $string . '%')->get();
         $artists = Artist::where('name', 'like', '%' . $string . '%')
             ->orWhere('surname', 'like', '%' . $string . '%')
+            ->andWhere(['status'=>'verified'])
             ->get();
-
-        return view('showSearchResults', compact('movies', 'artists', 'string'));
+        $verifiedArtists = $artists->filter(function ($artist) {
+            return $artist->status === 'verified';
+        });
+        $verifiedMovies = $movies->filter(function ($movies) {
+            return $movies->status === 'verified';
+        });
+        return view('showSearchResults', compact('verifiedMovies', 'verifiedArtists', 'string'));
     }
 
     public function searchReturnJson($string)
@@ -48,6 +54,11 @@ class SearchController extends Controller
             });
 
             $tmp = $movies->merge($artists);
+            $result = $tmp->merge($users);
+
+            $result = $result->filter(function ($tmp) {
+                return $tmp->status === 'verified';
+            });
             $result = $tmp->merge($users);
 
             return response()->json($result);

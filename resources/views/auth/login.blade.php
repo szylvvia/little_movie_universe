@@ -2,16 +2,29 @@
 
 @section('content')
 <div class="container">
+    <div class="row justify-content-center mb-1">
+        <div class="col-md-8">
+            @if (session('success'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('success') }}
+                </div>
+            @endif
+            @if (session('error'))
+                <div class="alert alert-danger" role="alert">
+                    {{ session('error') }}
+                </div>
+            @endif
+        </div>
+    </div>
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card custom-card">
                 <div class="card-header class custom-card-header">{{ __('Logowanie') }}</div>
-
                 <div class="card-body custom-card-body">
                     <form class="form" method="POST" action="{{ route('login') }}">
                         @csrf
                         <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Adres email') }}</label>
+                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Adres e-mail') }}</label>
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>

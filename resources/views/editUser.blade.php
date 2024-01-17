@@ -21,11 +21,11 @@
             @auth
             <div class="row mb-3">
                 <div class="col-md-8">
-                    <h1>Edit profile</h1>
+                    <h1>Edytujesz swój profil <strong>{{auth()->user()->name}}</strong></h1>
                 </div>
                 <form method="POST" action="{{route("editUser")}}" enctype="multipart/form-data">
                     @csrf
-                    <div class="row mb-3">
+                    <div class="row mb-3 pt-3">
                         <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Imie') }}</label>
                         <div class="col-md-6">
                             <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{auth()->user()->name}}" required autocomplete="name" autofocus>
@@ -72,7 +72,7 @@
                     <div class="row mb-3">
                         <label for="description" class="col-md-4 col-form-label text-md-end">{{ __('Opis użytkownika') }}</label>
                         <div class="col-md-6">
-                            <textarea id="description" class="form-control @error('description') is-invalid @enderror" name="description" autocomplete="description" autofocus placeholder="Write something about you"></textarea>
+                            <textarea id="description" class="form-control @error('description') is-invalid @enderror" name="description" autocomplete="description" autofocus placeholder="Write something about you">{{auth()->user()->description}}</textarea>
                             @error('description')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>

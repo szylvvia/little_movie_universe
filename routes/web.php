@@ -14,9 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/', function () {return view('home');});
 
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -64,7 +62,3 @@ Route::post('/deleteAnswer', [App\Http\Controllers\QuizController::class, 'delet
 Route::post("/deleteQuiz/{id}", [App\Http\Controllers\QuizController::class, 'deleteQuiz'])->name('deleteQuiz');
 Route::get('/editQuiz/{id}', [App\Http\Controllers\QuizController::class, 'editQuizForm'])->name('editQuizForm');
 Route::post('/editQuiz/{id}', [App\Http\Controllers\QuizController::class, 'editQuiz'])->name('editQuiz');
-
-
-
-

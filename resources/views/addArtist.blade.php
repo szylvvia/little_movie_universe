@@ -18,7 +18,7 @@
                     {{ session('error') }}
                 </div>
             @endif
-            <h1>Add artist</h1>
+            <h1>Dodaj nowego artystę</h1>
                 @auth
             <form class="form" method="POST" action="{{ route('addArtist') }}" enctype="multipart/form-data">
                 @csrf

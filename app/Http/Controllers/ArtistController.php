@@ -29,11 +29,13 @@ class ArtistController extends Controller
     }
     protected function validator(array $data)
     {
+        $today = Carbon::now()->format('d-m-Y');
+        $death = $data['death_date'];
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:50','regex:/^[A-ZĄĆĘŁŃÓŚŹŻ][A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ]+(\s[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ]+)?$/u'],
             'surname' => ['required', 'string', 'max:50','regex:/^[A-ZĄĆĘŁŃÓŚŹŻ][A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ]+(-[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ]+)?$/u'],
-            'birth_date' => ['required', 'date', 'before:today'],
-            'death_date' => ['nullable', 'date', 'before:today'],
+            'birth_date' => ['required', 'date', "before:$today"],
+            'death_date' => ['nullable', 'date', "before:$today", "after:$death"],
             'description' => ['nullable', 'string'],
             'profession' => ['required', 'in:Aktor,Reżyser,Scenarzysta,Kompozytor,Producent'],
             'gender' => ['required', 'in:Kobieta,Mężczyzna'],
@@ -65,6 +67,16 @@ class ArtistController extends Controller
         return $imageData;
     }
 
+    public function isDuplicateForAdd($name, $surname, $birth_date)
+    {
+        $duplicate = Artist::where(['name' => $name, 'surname'=>$surname,'birth_date'=>$birth_date])
+                    ->get();
+        if (sizeof($duplicate) > 0) {
+            return true;
+        }
+        return false;
+    }
+
     public function addArtist(Request $request)
     {
         $imageValidator = $this->validatorImageRequire($request->all());
@@ -73,30 +85,38 @@ class ArtistController extends Controller
         if ($validator->fails() || $imageValidator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
-                ->withErrors($imageValidator)
+//                ->withErrors($imageValidator)
                 ->withInput();
         }
-
-        $userId = auth()->user()->id;
-        $resizedImage = $this->resizeImage($request->image);
-
-        Artist::create([
-            'name' => $request->name,
-            'surname' => $request->surname,
-            'birth_date' => $request->birth_date,
-            'death_date' => $request->death_date,
-            'description' => $request->description,
-            'user_id' => $userId,
-            'status' => 'pending',
-            'gender' => $request->gender,
-            'profession' => $request->profession,
-            'image' => $resizedImage
-        ]);
-        if(auth()->user()->role=='admin')
+        if(!$this->isDuplicateForAdd($request->name,$request->surname,$request->birth_date))
         {
-            return redirect()->route('showAdminPanel')->with('success', 'Artysta został dodany pomyślnie.');
+            $userId = auth()->user()->id;
+            $resizedImage = $this->resizeImage($request->image);
+
+            Artist::create([
+                'name' => $request->name,
+                'surname' => $request->surname,
+                'birth_date' => $request->birth_date,
+                'death_date' => $request->death_date,
+                'description' => $request->description,
+                'user_id' => $userId,
+                'status' => 'pending',
+                'gender' => $request->gender,
+                'profession' => $request->profession,
+                'image' => $resizedImage
+            ]);
+            if(auth()->user()->role=='admin')
+            {
+                return redirect()->route('showAdminPanel')->with('success', 'Artysta został dodany pomyślnie.');
+            }
+            return redirect('/artists')->with('success', 'Artysta został dodany pomyślnie');
         }
-        return redirect('/artists')->with('success', 'Artysta został dodany pomyślnie');
+        else
+        {
+            return redirect('/artists')->with('error', 'Artysta istnieje już w bazie danych');
+
+        }
+
     }
 
     public function deleteArtist($id)

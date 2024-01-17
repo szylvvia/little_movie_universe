@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <h3>Admin panel</h3>
+            <h3>Panel administratora</h3>
             <div class="card-body">
                 @if (session('status'))
                     <div class="alert alert-success" role="alert">

@@ -16,22 +16,15 @@ class RateController extends Controller
     }
     protected function validator(array $data)
     {
-        $rules = [
-            'rate' => ['required', 'min:1', 'max:10'],
-            'review' => ['nullable','string', 'max:255',function ($attribute, $value, $fail) {
-                $cleanedReview = strip_tags($value);
-                if ($value !== $cleanedReview) {
-                    $fail('Recenzja jest niepoprawna!');
-                }
-            }]
-        ];
-        return Validator::make($data, $rules);
+        $data['rate'] = intval($data['rate']);
+        return Validator::make($data, array_merge([
+            'rate' => ['required', 'numeric', 'max:10', 'min:1'],
+            'review' => ['nullable','string', 'max:255']
+        ]));
     }
 
     public function addOrEditRate($id,Request $request)
     {
-        $user_id = auth()->user()->id;
-
         $validator = $this->validator($request->all());
 
         if ($validator->fails()) {
@@ -39,7 +32,7 @@ class RateController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-
+        $user_id = auth()->user()->id;
         $existingRate = Rate::where('user_id', $user_id)->where('movie_id', $id)->first();
 
         if($existingRate==null)
@@ -51,7 +44,7 @@ class RateController extends Controller
                 'review' => trim($request->review)
             ]);
             if ($rate) {
-                return redirect()->route('showMovie',['id'=>$id])->with('success', 'Ocena została zaktualizowana pomyślnie.');
+                return redirect()->route('showMovie',['id'=>$id])->with('success', 'Ocena i recenzja została dodana pomyślnie.');
             } else {
                 return redirect()->route('showMovie',['id'=>$id])->with('error', 'Coś poszło nie tak. Spróbuj ponownie.');
             }
@@ -75,8 +68,8 @@ class RateController extends Controller
         $existingRate = Rate::where('user_id', auth()->user()->id)->where('movie_id', $id)->first();
         if($existingRate)
         {
-            $resoult = $existingRate->delete();
-            if($resoult)
+            $result = $existingRate->delete();
+            if($result)
             {
                 return redirect()->route('showMovie',['id'=>$id])->with('success', 'Ocena została zaktualizowana pomyślnie.');
             }

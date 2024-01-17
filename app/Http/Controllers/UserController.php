@@ -111,15 +111,23 @@ class UserController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-        $image = $user->image;
+
         if ($request->hasFile('image')) {
-            $image = $this->resizeImage($request->file('image'), 100);
+            $request->image = $this->resizeImage($request->file('image'), 100);
+        }
+        else
+        {
+            $request->image = $this->resizeImage($user->image, 300);
         }
 
-        $background = $user->background;
         if ($request->hasFile('background')) {
-            $background = $this->resizeImage($request->file('background'), 1000);
+           $request->background = $this->resizeImage($request->file('background'), 1000);
         }
+        else
+        {
+            $request->background = $user->background;
+        }
+
 
         if(!$request->description)
         {
@@ -131,15 +139,15 @@ class UserController extends Controller
             'surname' => $request -> surname,
             'birth_date' => $request -> birth_date,
             'description' => $request -> description,
-            'image' => $image,
-            'background' => $background
+            'image' => $request->image,
+            'background' => $request->background
             ]);
 
         if($add)
         {
-            return redirect()->route('showUser')->with('success', 'Twój profil został pomyslnie zaktualizowany.');
+            return redirect()->route('showUser',['id' => $id])->with('success', 'Twój profil został pomyslnie zaktualizowany.');
         }
-        else  return redirect()->route('showUser')->with('error', 'Coś poszło nie tak. Spróbuj ponownie później.');
+        else  return redirect()->route('showUser',['id' => $id])->with('error', 'Coś poszło nie tak. Spróbuj ponownie później.');
     }
 
 }

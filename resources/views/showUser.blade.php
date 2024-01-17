@@ -85,7 +85,7 @@
                             <p><i>Brak ulubionych filmów!</i></p>
                         @endif
                     </div>
-                    <div class="row mb-3">
+                    <div class="row mb-3 custom-text">
                         <h4>Do obejrzenia</h4>
                         @if($wat->isNotEmpty())
                             @foreach($wat as $w)

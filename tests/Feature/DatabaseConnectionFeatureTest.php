@@ -11,20 +11,9 @@ use Illuminate\Support\Facades\DB;
 use Mockery\Exception;
 use Tests\TestCase;
 
-class DatabaseConnectionTestFeature extends TestCase
+class DatabaseConnectionFeatureTest extends TestCase
 {
     use DatabaseTransactions;
-
-    public function testDatabaseConnectionUsingEloquent(): void
-    {
-        try {
-            $user = User::first();
-            $connected = true;
-        } catch (\Exception $e) {
-            $connected = false;
-        }
-        $this->assertTrue($connected);
-    }
 
     public function testDatabaseHasProperTables()
     {

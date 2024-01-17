@@ -8,12 +8,14 @@ use App\Models\Question;
 use App\Models\Quiz;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 use function PHPUnit\Framework\isNull;
 
 class QuizController extends Controller
 {
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -25,8 +27,6 @@ class QuizController extends Controller
             return view("addQuizForm");
         }
         return redirect()->route("home")->with('error', 'Dostęp tylko dla administratora!');
-
-
     }
 
     protected function checkImage()
@@ -47,11 +47,13 @@ class QuizController extends Controller
 
     protected function validator(array $data)
     {
+        $today = Carbon::now()->format('d-m-Y');
+        $start = $data['start_date'];
         $rules = [
             'title' => ['required', 'string', 'min:10'],
             'description' => ['required', 'string'],
-            'start_date' => ['required', 'date', 'after_or_equal:today'],
-            'end_date' => ['required', 'date', 'after:start_date'],
+            'start_date' => ['required', 'date', "after_or_equal:$today"],
+            'end_date' => ['required', 'date', "after:$start"],
             'images.*' => ['required', 'image', 'mimes:jpeg,png,jpg', 'mimetypes:image/jpeg,image/png,image/jpg', 'max: 16777215', $this->checkImage()],
             'options.*' => ['required', 'string', "min:3", 'max:100']
         ];

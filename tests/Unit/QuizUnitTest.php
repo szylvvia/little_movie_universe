@@ -1,42 +1,32 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Unit;
 
-use App\Http\Controllers\QuizController;
 use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
-use Mockery;
 use Tests\TestCase;
 
-
-class QuizTestFeature extends TestCase
+class QuizUnitTest extends TestCase
 {
     use DatabaseTransactions;
 
+
     public function testAddQuizWhenDataIsValidAndUserIsAdmin()
     {
-        $admin = User::factory()->create(
-            [
-                'role' => 'admin'
-            ]
-        );
+        $admin = User::factory()->create(['role' => 'admin']);
         Storage::fake('public');
         $file1 = UploadedFile::fake()->image('poster.jpg');
 
         $this->actingAs($admin);
         $data = [
             'title' => 'Test Test Test Test',
-            'description' => "kdjsfhdsjkghdfjg",
-            'start_date' => now()->addDays(1000)->format('Y-m-d'),
-            'end_date' => now()->addDays(10001)->format('Y-m-d'),
+            'description' => "opis opis opis",
+            'start_date' => now()->addDays(100)->format('Y-m-d'),
+            'end_date' => now()->addDays(101)->format('Y-m-d'),
             'options' => [
                 1 => "o111",
                 2 => "o222",
@@ -94,7 +84,7 @@ class QuizTestFeature extends TestCase
         $this->actingAs($admin);
         $data = [
             'title' => 'Test Test Test Test',
-            'description' => "kdjsfhdsjkghdfjg",
+            'description' => "Opis opis opis",
             'start_date' => now()->addDays(100)->format('Y-m-d'),
             'end_date' => now()->addDays(99)->format('Y-m-d'),
             'options' => [
@@ -110,11 +100,11 @@ class QuizTestFeature extends TestCase
         ];
         $response = $this->post('/addQuiz', $data);
         $response->assertStatus(302);
-        $response->assertSessionHasErrors(['end_date' => 'Pole data zakończenia musi być datą po data rozpoczęcia.']);
+        $response->assertSessionHasErrors(['end_date' => 'Pole data zakończenia musi być datą po '.$data['start_date'].'.']);
     }
 
     //^^^działa
-    public function testEditQuizWhenDatesIsInvalidAndUserIsAdmin()
+    public function testEditQuizWhenDatesIsValidAndUserIsAdmin()
     {
         $admin = User::factory()->create(
             [
@@ -126,7 +116,7 @@ class QuizTestFeature extends TestCase
         $this->actingAs($admin);
         $data = [
             'title' => 'Test Test Test Test',
-            'description' => "kdjsfhdsjkghdfjg",
+            'description' => "opis opis opis opis",
             'start_date' => now()->addDays(200)->format('Y-m-d'),
             'end_date' => now()->addDays(2007)->format('Y-m-d'),
             'options' => [

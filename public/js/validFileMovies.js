@@ -7,20 +7,25 @@ document.addEventListener("DOMContentLoaded", function () {
         for (var i = 0; i < files.length; i++) {
             var file = files[i];
 
-            var allowedExtensions = ['jpeg', 'png', 'jpg'];
-            var extension = file.name.split('.').pop().toLowerCase();
+            var allowedExtensions = ["jpeg", "png", "jpg"];
+            var extension = file.name.split(".").pop().toLowerCase();
 
             if (allowedExtensions.indexOf(extension) === -1) {
                 // Update the text inside errorMessages span
                 console.log("ERROR EXT");
-                errorMessagesSpan.textContent = "Each file must be of type: " + allowedExtensions.join(', ');
+                errorMessagesSpan.textContent =
+                    "Każdy obraz musi być w typie: " +
+                    allowedExtensions.join(", ");
                 fileInput.value = "";
                 return;
             }
 
             if (file.size > maxSizeBytes) {
                 console.log("ERROR SIZE");
-                errorMessagesSpan.textContent = "Each file must not be larger than " + maxSizeMB + " MB.";
+                errorMessagesSpan.textContent =
+                    "Rozmiar obrazu nie może być większy niż" +
+                    maxSizeMB +
+                    " MB.";
                 fileInput.value = "";
                 return;
             }
@@ -30,14 +35,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     var imagesInput = document.getElementById("images");
-    var jsImagesErrorMessagesSpan = document.getElementById("jsImagesErrorMessages");
+    var jsImagesErrorMessagesSpan = document.getElementById(
+        "jsImagesErrorMessages",
+    );
 
     imagesInput.addEventListener("change", function () {
         handleFileInput(this, jsImagesErrorMessagesSpan);
     });
 
     var posterInput = document.getElementById("poster");
-    var jsPosterErrorMessagesSpan = document.getElementById("jsPosterErrorMessages");
+    var jsPosterErrorMessagesSpan = document.getElementById(
+        "jsPosterErrorMessages",
+    );
 
     posterInput.addEventListener("change", function () {
         handleFileInput(this, jsPosterErrorMessagesSpan);
@@ -45,10 +54,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //artysta
     var imageInput = document.getElementById("image");
-    var jsImageErrorMessagesSpan = document.getElementById("jsImageErrorMessages");
+    var jsImageErrorMessagesSpan = document.getElementById(
+        "jsImageErrorMessages",
+    );
 
     imageInput.addEventListener("change", function () {
         handleFileInput(this, jsImageErrorMessagesSpan);
     });
-
 });

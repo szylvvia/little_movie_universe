@@ -1,5 +1,6 @@
 #jsImagesErrorMessages, #jsPosterErrorMessages, #jsImageErrorMessages,#rateError{
-
+    color: #c03939;
+    font-weight: bold;
 }
 .customError
 {

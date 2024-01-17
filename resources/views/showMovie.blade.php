@@ -58,7 +58,37 @@
                                 @endif
                             @endauth
                         </div>
+                        <div class="mb-1 col-md-1 ms-2 mt-1">
+                            <div class="ms-4">
+                            @auth
+                                <div class="d-flex justify-content-between">
+                                    @if(!$movie->isFav)
+                                        <form method="POST" action="{{ route('addToCollection', ['id' => $movie->id,'name' => 'favorite']) }}">
+                                            @csrf
+                                            <button type="submit" class="btn" title="Dodaj do ulubionych"><h4><i class="bi bi-heart movie-fav"></i></h4></button>
+                                        </form>
+                                    @else
+                                        <form method="POST" action="{{ route('deleteFromCollection', ['id' => $movie->id,'name' => 'favorite']) }}">
+                                            @csrf
+                                            <button type="submit" class="btn" title="Usuń z ulubionych"><h4><i class="bi bi-heart-fill movie-fav"></i></h4></button>
+                                        </form>
+                                    @endif
 
+                                    @if(!$movie->isWatch)
+                                        <form method="POST" action="{{ route('addToCollection', ['id' => $movie->id,'name' => 'toWatch']) }}">
+                                            @csrf
+                                            <button type="submit" class="btn" title="Dodaj do obejrzenia"><h4><i class="bi bi-stopwatch movie-watch"></i></h4></button>
+                                        </form>
+                                    @else
+                                        <form method="POST" action="{{ route('deleteFromCollection', ['id' => $movie->id,'name' => 'toWatch']) }}">
+                                            @csrf
+                                            <button type="submit" class="btn" title="Usuń z do obejrzenia"><h4><i class="bi bi-stopwatch-fill movie-watch"></i></h4></button>
+                                        </form>
+                                    @endif
+                                </div>
+                            </div>
+                            @endauth
+                        </div>
                         <p class="ms-5"><i>{{$movie->description}}</i></p>
                         <p class="ms-5">Release date {{$movie->release_date}}</p>
 
@@ -79,19 +109,21 @@
                                 </div>
                             @endforeach
                         </div>
+
+                        </div>
                     </div>
                 </div>
                 <div class="row mb-3">
-                <div class="col-md-8">
-                    <iframe class="trailer" height="352" src="{{$movie->trailer_link}}" title="{{$movie->title}}"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowfullscreen></iframe>
-                </div>
-                <div class="col-md-4">
-                    <iframe class="soundtrack" src="{{$movie->soundtrack_link}}" height="352" allowfullscreen=""
-                            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                            loading="lazy"></iframe>
-                </div>
+                    <div class="col-md-8">
+                        <iframe class="trailer" height="352" src="{{$movie->trailer_link}}" title="{{$movie->title}}"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen></iframe>
+                    </div>
+                    <div class="col-md-4">
+                        <iframe class="soundtrack" src="{{$movie->soundtrack_link}}" height="352" allowfullscreen=""
+                                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                                loading="lazy"></iframe>
+                    </div>
             </div>
 
             <div class="row mb-3 m-0 rounded-3 align-items-center justify-content-center galleryBackground">
@@ -117,6 +149,11 @@
             </div>
             <div class="row mb-3">
                 <h3>Rates & Review</h3>
+                @if (session('success'))
+                    <div class="alert alert-success" role="alert">
+                        {{ session('success') }}
+                    </div>
+                @endif
                 @auth
                     @if($userRate==null)
                         <div class="col-md-1 mt-3 text-center custom-text ms-3">
@@ -155,11 +192,11 @@
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                                 @enderror
+                                                    <div id="rateError" class="customError" role="alert"></div>
                                             </div>
+
                                         </div>
-                                        <div class="row mb-0">
-                                            <div id="rateError" class="customError" role="alert"></div>
-                                        </div>
+
                                         <div class="row mb-3">
                                             <label for="review"
                                                    class="col-md-1 col-form-label text-md-end me-4">{{ __('Recenzja') }}</label>
@@ -167,11 +204,7 @@
                                                 <textarea id="review"
                                                           class="m-2 form-control @error('review') is-invalid @enderror"
                                                           name="review" autocomplete="review" autofocus
-                                                          placeholder="Your review">@if(isset($userRate) && $userRate->review != null)
-                                                        {{ $userRate->review }}
-                                                    @else
-                                                        {{ old("review") }}
-                                                    @endif</textarea>
+                                                          placeholder="Your review">@if(isset($userRate) && $userRate->review != null){{ $userRate->review }}@else{{ old("review") }}@endif</textarea>
                                                 @error('review')
                                                 <span id="reviewError" class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -222,7 +255,7 @@
                                             <i>{{$userRate->review}}</i>
                                         </div>
                                     </div>
-                                    @if($userRate->user_id==auth()->user()->id)
+
                                         <div class="row mt-2 justify-content-center">
                                             @isset($userRate)
                                                 <div class="col-md-2 d-flex justify-content-center align-items-center">
@@ -239,7 +272,6 @@
                                                 </div>
                                             @endisset
                                         </div>
-                                    @endif
                                 </div>
                                 <div class="col-md-6 pt-3 pb-3">
                                     <div id="formContainer" style="display: none;">
@@ -282,10 +314,7 @@
                                                                class="col-md-1 col-form-label text-md-end me-4 ps-5">{{ __('Recenzja') }}</label>
                                                         <div class="col-md-7 ms-2">
                                 <textarea id="review" class="m-2 form-control @error('review') is-invalid @enderror"
-                                          name="review" autocomplete="review" autofocus placeholder="Your review">@if(isset($userRate) && $userRate->review != null){{ $userRate->review }}
-                                    @else
-                                        {{ old("review") }}
-                                    @endif</textarea>
+                                          name="review" autocomplete="review" autofocus placeholder="Your review">@if(isset($userRate) && $userRate->review != null){{ $userRate->review }}@else{{ old("review") }}@endif</textarea>
                                                             @error('review')
                                                             <span id="reviewError" class="invalid-feedback"
                                                                   role="alert">
@@ -315,6 +344,8 @@
                 @endauth
 
                 @foreach($movie->rate as $r)
+                    @if(isset($userRate) and $r->id==$userRate->id)
+                    @else
                     <div class="col-md-12 mb-3">
                         <div class="row">
                             <div class="col-md-1 mt-3 text-center custom-text ms-3">
@@ -344,6 +375,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                 @endforeach
             </div>
             <script src="{{asset('js/rateAndReviewForm.js')}}"></script>

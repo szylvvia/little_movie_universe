@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     let checkboxes = document.querySelectorAll('input[name="rate"]');
-    let form = document.getElementById('rateForm');
+    let form = document.getElementById("rateForm");
     let rateError = document.getElementById("rateError");
     let reviewError = document.getElementById("reviewError");
     let review = document.getElementById("review");
@@ -15,26 +15,23 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     checkboxes.forEach(function (checkbox) {
-        checkbox.addEventListener('change', function () {
+        checkbox.addEventListener("change", function () {
             var selectedValue = this.value;
             handleCheckboxChange(selectedValue);
         });
     });
 
-    clear.addEventListener('change', function ()
-    {
+    clear.addEventListener("change", function () {
         for (var i = 1; i <= 10; i++) {
-            var checkbox = document.getElementById('rate' + i);
+            var checkbox = document.getElementById("rate" + i);
             checkbox.checked = false;
         }
         clear.checked = false;
-    })
+    });
 
-
-
-    form.addEventListener('submit', function (event) {
+    form.addEventListener("submit", function (event) {
         if (!checkboxIsChecked()) {
-            rateError.textContent = "Rate must be between 1 and 10";
+            rateError.textContent = "Ocena musi być wartością od 1 do 10";
             event.preventDefault();
         } else {
             rateError.textContent = "";
@@ -42,7 +39,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         var text = review.value;
         if (text.length > 255) {
-            reviewError.textContent = "Review must be less than 255 characters";
+            reviewError.textContent =
+                "Ocena nie może zawierać więcej znaków niż 255";
             event.preventDefault();
         } else {
             reviewError.textContent = "";
@@ -64,9 +62,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function handleCheckboxChange(value) {
         for (var i = 1; i <= 10; i++) {
-            var checkbox = document.getElementById('rate' + i);
+            var checkbox = document.getElementById("rate" + i);
             checkbox.checked = i <= value;
         }
     }
-
 });

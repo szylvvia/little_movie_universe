@@ -11,7 +11,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
-class MovieTestUnit extends TestCase
+class MovieUnitTest extends TestCase
 {
     use DatabaseTransactions;
 
