@@ -16,6 +16,31 @@ The developed platform is aimed at users who are connected in films, whether pro
     <li>XAMPP</li>
 </ul>
 
+## Views of application
+![m1](https://github.com/szylvvia/little_movie_universe/assets/84547266/5e3fa1b9-18aa-498b-8637-808035c41c16)
+<p align='center'><i>Home page with quiz</i></p>
+
+![m2](https://github.com/szylvvia/little_movie_universe/assets/84547266/590488c2-e662-4c29-b6ca-b585cede6458)
+<p align='center'><i>The best movies rank</i></p>
+
+![m5](https://github.com/szylvvia/little_movie_universe/assets/84547266/3d474333-39b1-4446-b8ba-5a4d49c6b446)
+<p align='center'><i>Page with details of choosen movie</i></p>
+
+![m6](https://github.com/szylvvia/little_movie_universe/assets/84547266/3b16ae4a-de2f-4237-9402-dcadfdd9a06f)
+<p align='center'><i>Rate and review section of choosen movie</i></p>
+
+![m3](https://github.com/szylvvia/little_movie_universe/assets/84547266/105005ab-8d13-40bc-9a85-a8a2ec953c64)
+<p align='center'><i>Page with all artists verified in database</i></p>
+
+![m4](https://github.com/szylvvia/little_movie_universe/assets/84547266/cc37e3e3-cb26-48f2-b7ab-b2df268a1a63)
+<p align='center'><i>Details of choosen artist</i></p>
+
+![m7](https://github.com/szylvvia/little_movie_universe/assets/84547266/4866754d-319e-47a1-bca1-e2592b762294)
+<p align='center'><i>Admin panel with pending items sections</i></p>
+
+![m8](https://github.com/szylvvia/little_movie_universe/assets/84547266/a0fd5510-27d6-4d58-b157-901fb3bac933)
+<p align='center'><i>User home page</i></p>
+
 ## Running the application on the local server
 In order to launch the application, there are several steps to follow. Beforehand, it is necessary
 PHP interpreter, MySQL or MariaDB database server, the tool
